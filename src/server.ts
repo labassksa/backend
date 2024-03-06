@@ -1,15 +1,39 @@
 import "dotenv/config";
+import { AppDataSource } from "./configuration/ormconfig";
 import express from "express";
-import bodyParser from "body-parser";
+import userRoutes from "./api_labass/routes/userRoutes";
+import "reflect-metadata";
+import dotenv from "dotenv";
 
-const app = express();
-const PORT = process.env.PORT || 3000;
+// Dynamically load the correct .env file based on NODE_ENV
 
-// // Routes
-// app.use("/api");
-app.get("/", (req, res) => {
-  res.send("Welcome to the Telemedicine Platform !");
+const result = dotenv.config({
+  path: `.env.${process.env.NODE_ENV || "development"}`,
 });
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
-});
+console.log(process.env.NODE_ENV);
+console.log(process.env.DB_PASSWORD);
+
+if (result.error) {
+  throw result.error;
+}
+
+// Your application code starts here
+
+AppDataSource.initialize()
+  .then(() => {
+    console.log("Data Source has been initialized!");
+    // Your application logic here, e.g., starting up an express server
+    console.log(process.env.PORT);
+    const app = express();
+    const PORT = process.env.PORT || 3000;
+
+    // // Routes
+    // app.use("/api");
+    // app.use("/", userRoutes);
+    app.listen(PORT, () => {
+      console.log(`Server is running on port ${PORT}`);
+    });
+  })
+  .catch((error: string) => {
+    console.error("Error during Data Source initialization:", error);
+  });

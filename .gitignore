@@ -3,7 +3,7 @@ node_modules/
 jspm_packages/
 
 # TypeScript compiled JavaScript files
-build/
+dist/
 
 # dotenv environment variables file
 .env
