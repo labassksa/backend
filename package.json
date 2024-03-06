@@ -9,7 +9,7 @@
   "scripts": {
     "start": "nodemon src/server.ts --exec ts-node",
     "dev": "NODE_ENV=development ts-node src/server.ts",
-    "test": "NODE_ENV=test ts-node src/server.ts",
+    "test": "NODE_ENV=testing ts-node src/server.ts",
     "prod": "NODE_ENV=production ts-node src/server.ts"
   },
   "keywords": [],

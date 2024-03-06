@@ -10,8 +10,8 @@ import dotenv from "dotenv";
 const result = dotenv.config({
   path: `.env.${process.env.NODE_ENV || "development"}`,
 });
-console.log(process.env.NODE_ENV);
-console.log(process.env.DB_PASSWORD);
+console.log(`Environment is ${process.env.NODE_ENV}`);
+console.log(`Password is ${process.env.DB_PASSWORD}`);
 
 if (result.error) {
   throw result.error;
