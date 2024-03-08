@@ -12,6 +12,7 @@ const result = dotenv.config({
 });
 console.log(`Environment is ${process.env.NODE_ENV}`);
 console.log(`Password is ${process.env.DB_PASSWORD}`);
+console.log(`TZ is ${process.env.TZ}`);
 
 if (result.error) {
   throw result.error;
