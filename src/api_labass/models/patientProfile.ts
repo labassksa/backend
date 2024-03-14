@@ -22,7 +22,7 @@ export class PatientProfile {
 
   @OneToOne((type) => User)
   @JoinColumn()
-  user!: User; // Relate to the User model
+  user?: User; // Relate to the User model
 
   @Column({ nullable: true })
   guardianId?: number; // ID of the guardian's PatientProfile, if this profile is for a dependent
