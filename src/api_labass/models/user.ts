@@ -1,37 +1,35 @@
-import {
-  Entity,
-  PrimaryGeneratedColumn,
-  Column,
-  CreateDateColumn,
-} from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn } from "typeorm";
 
 @Entity()
 export class User {
   @PrimaryGeneratedColumn()
-  id!: number; // Auto-initialized by TypeORM, no need for manual initialization
+  id!: number; //By using !, you're informing TypeScript that the id field will be populated 
+  //by some mechanism outside the constructor (in this case, by TypeORM when the entity is persisted).
 
   @Column({ unique: true })
-  phoneNumber: string = ""; // Initialize with an empty string if not provided immediately
-  @Column()
-  firstName!: string;
+  phoneNumber!: string; // Essential for registration/login
 
-  @Column()
-  lastName!: string;
-  @Column()
-  email!: string; // Mark as optional if it can be null
+  @Column({ nullable: true })
+  firstName?: string;
 
-  @Column()
-  gender!: string; // Mark as optional if it can be null
+  @Column({ nullable: true })
+  lastName?: string;
 
-  @Column()
-  nationalId!: string; // Mark as optional if it can be null
+  @Column({ nullable: true })
+  email?: string;
 
-  @Column("date")
-  dateOfBirth!: Date; // Mark as optional if it can be null
+  @Column({ nullable: true })
+  gender?: string;
 
-  @Column()
-  role: string = "patient"; // Provide a default role, assuming 'patient' as the most common
+  @Column({ nullable: true })
+  nationalId?: string;
+
+  @Column("date", { nullable: true })
+  dateOfBirth?: Date;
+
+  @Column({ default: "patient" })
+  role!: string; // Default role as 'patient'
 
   @CreateDateColumn()
-  createdAt: Date = new Date(); // Default to current date/time, auto-managed by TypeORM
+  createdAt: Date = new Date();
 }

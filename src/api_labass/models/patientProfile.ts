@@ -27,8 +27,10 @@ export class PatientProfile {
   @Column({ nullable: true })
   guardianId?: number; // ID of the guardian's PatientProfile, if this profile is for a dependent
 
-  @OneToMany(() => PatientProfile, (dependent) => dependent.guardian)
-  dependents!: PatientProfile[];
+  @OneToMany(() => PatientProfile, (dependent) => dependent.guardian, {
+    nullable: true,
+  })
+  dependents?: PatientProfile[];
 
   @ManyToOne(() => PatientProfile, (guardian) => guardian.dependents, {
     nullable: true,
@@ -37,5 +39,5 @@ export class PatientProfile {
 
   // Relationships to consultations and prescriptions
   @OneToMany((type) => Consultation, (consultation) => consultation.patient)
-  consultations!: Consultation[];
+  consultations?: Consultation[];
 }

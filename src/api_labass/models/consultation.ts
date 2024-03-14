@@ -3,20 +3,19 @@ import {
   PrimaryGeneratedColumn,
   ManyToOne,
   CreateDateColumn,
-  UpdateDateColumn,
   OneToMany,
   OneToOne,
   JoinColumn,
   Column,
 } from "typeorm";
-import { DoctorProfile } from "./doctorprofile";
+import { DoctorProfile } from "./doctorProfile";
 import { PatientProfile } from "./patientProfile";
 import { ConsultationType } from "../../types/consultation_types";
 import { ConsultationStatus } from "../../types/consultationstatus";
 import { Prescription } from "./prescription";
 import { SOAP } from "./soap";
-import { SickLeave } from "./sickleave";
-import { Chat } from "./chat";
+import { SickLeave } from "./sickLeave";
+import { ChatMessage } from "./chatMessage";
 
 @Entity()
 export class Consultation {
@@ -46,8 +45,8 @@ export class Consultation {
   type!: ConsultationType;
 
   // Chats are tied to consultations, not users
-  @OneToMany((type) => Chat, (chat) => chat.consultation)
-  chats!: Chat[];
+  @OneToMany((type) => ChatMessage, (chat) => chat.consultation)
+  chats!: ChatMessage[];
 
   // One-to-one relations to other consultation details
   @OneToOne((type) => Prescription)

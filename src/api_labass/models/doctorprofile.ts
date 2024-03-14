@@ -25,5 +25,5 @@ export class DoctorProfile {
 
   // Relationship to consultations
   @OneToMany((type) => Consultation, (consultation) => consultation.doctor)
-  consultations!: Consultation[];
+  consultations?: Consultation[];
 }

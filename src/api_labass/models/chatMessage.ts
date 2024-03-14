@@ -9,7 +9,7 @@ import { Consultation } from "./consultation";
 import { User } from "./user";
 
 @Entity()
-export class Chat {
+export class ChatMessage {
   @PrimaryGeneratedColumn()
   id!: number;
 

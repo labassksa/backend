@@ -1,6 +1,51 @@
 //Authentication Service: Handles the logic for signing in users and issuing JWT tokens.
-//This service will verify user credentials and, upon success,
+//This service will authenticate the user using OTP code and through two factor authentication. Upon success,
 //generate a JWT token that includes relevant user information (such as user ID and role).
 
 //Implement functions to authenticate users and generate JWT tokens.
 //Use packages like jsonwebtoken for token generation and verification
+
+import jwt from "jsonwebtoken";
+import { UserService } from "./UserService"; // Assuming you have this service
+import { OTPService } from "./OTPService"; // Your SMS verification service
+import { inject, injectable } from "tsyringe";
+
+export
+@injectable()
+class AuthService {
+  constructor(
+    @inject(UserService) private userService: UserService,
+    @inject(OTPService) private otpService: OTPService
+  ) {}
+
+  async verifyOTPAndAuthenticate(
+    phoneNumber: string,
+    otpcode: string,
+    role: string
+  ): Promise<string> {
+    try {
+      // Await the OTP verification. An error will be thrown and caught below if verification fails.
+      await this.otpService.verifyCode(phoneNumber, otpcode);
+
+      // Proceed with finding or creating the user since OTP verification succeeded
+      let user = await this.userService.findUserByPhoneNumber(phoneNumber);
+      if (!user) {
+        user = await this.userService.createUser(phoneNumber, role);
+      }
+
+      // Generate JWT for the verified user
+      const token = jwt.sign(
+        { id: user.id, role: user.role },
+        process.env.JWT_SECRET!,
+        {
+          expiresIn: "24h",
+        }
+      );
+      return token;
+    } catch (error) {
+      // Handle or log the error as appropriate for your application
+      console.error("Authentication error:", error);
+      throw error; // Ensure the error is propagated or handled appropriately
+    }
+  }
+}

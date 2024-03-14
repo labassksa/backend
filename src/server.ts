@@ -1,40 +1,41 @@
-import "dotenv/config";
-import { AppDataSource } from "./configuration/ormconfig";
-import express from "express";
-import userRoutes from "./api_labass/routes/userRoutes";
 import "reflect-metadata";
-import dotenv from "dotenv";
+import "dotenv/config";
+import express from "express";
+import {AppDataSource , OTPDataSource} from "./configuration/ormconfig";
+import userRouter from "./api_labass/routes/userRoutes";
+import otpRouter from "./api_labass/routes/otpRoute";
+import authRouter from "./api_labass/routes/authRoute";
+import swaggerUi from "swagger-ui-express";
+import swaggerJSDoc from "swagger-jsdoc";
+import swaggerConfig from "./documentation/swaggerConfig.json";
 
-// Dynamically load the correct .env file based on NODE_ENV
+const app = express();
+const PORT = process.env.PORT || 3000;
+console.log(`Server running on port ${PORT}`);
+console.log(`env variable for Password: ${process.env.DB_PASSWORD}`);
+app.use(express.json());
 
-const result = dotenv.config({
-  path: `.env.${process.env.NODE_ENV || "development"}`,
-});
-console.log(`Environment is ${process.env.NODE_ENV}`);
-console.log(`Password is ${process.env.DB_PASSWORD}`);
-console.log(`TZ is ${process.env.TZ}`);
+// Set up Swagger UI before database initialization to ensure it's always accessible
+const swaggerSpec = swaggerJSDoc(swaggerConfig);
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
-if (result.error) {
-  throw result.error;
-}
-
-// Your application code starts here
-
-AppDataSource.initialize()
-  .then(() => {
+async function startServer() {
+  //initialize the postgress db
+  try {
+    await AppDataSource.initialize();
     console.log("Data Source has been initialized!");
-    // Your application logic here, e.g., starting up an express server
-    console.log(process.env.PORT);
-    const app = express();
-    const PORT = process.env.PORT || 3000;
+    await OTPDataSource.initialize(); // Initialize SQLite database for OTPs
+    console.log("SQLite OTP Data Source has been initialized!");
+    // Routes setup after successful database initialization
+    app.use("/api_labass", userRouter);
+    app.use("/api_labass", otpRouter);
+    app.use("/api_labass", authRouter);
 
-    // // Routes
-    // app.use("/api");
-    // app.use("/", userRoutes);
     app.listen(PORT, () => {
-      console.log(`Server is running on port ${PORT}`);
+      console.log(`Server running on port ${PORT}`);
     });
-  })
-  .catch((error: string) => {
+  } catch (error) {
     console.error("Error during Data Source initialization:", error);
-  });
+  }
+}
+startServer();
