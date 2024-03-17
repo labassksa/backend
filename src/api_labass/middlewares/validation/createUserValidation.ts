@@ -3,7 +3,7 @@ import { Request, Response, NextFunction } from 'express';
 
 export const createUserValidation = [
   body('role')
-    .isIn(['patient', 'doctor', 'admin'])
+    .isIn(['patient', 'doctor', 'admin'])// replace it with Roles enum if applicable
     .withMessage('Invalid role specified'),
   // Function to check the validation result and return errors if validation failed
   (req: Request, res: Response, next: NextFunction) => {

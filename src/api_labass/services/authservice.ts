@@ -15,7 +15,7 @@ export
 class AuthService {
   constructor(
     @inject(UserService) private userService: UserService,
-    @inject(OTPService) private otpService: OTPService
+    @inject("OTPService") private otpService: OTPService
   ) {}
 
   async verifyOTPAndAuthenticate(
@@ -27,13 +27,14 @@ class AuthService {
       // Await the OTP verification. An error will be thrown and caught below if verification fails.
       await this.otpService.verifyCode(phoneNumber, otpcode);
 
-      // Proceed with finding or creating the user since OTP verification succeeded
+      // Proceed with finding the user if the user record exists
       let user = await this.userService.findUserByPhoneNumber(phoneNumber);
+      //or Proceed with creating the user since OTP verification succeeded and the user would like to register
       if (!user) {
-        user = await this.userService.createUser(phoneNumber, role);
+        user = await this.userService.createPartialUser(phoneNumber, role);
       }
 
-      // Generate JWT for the verified user
+      // Generate JWT for the verified user, and log him in
       const token = jwt.sign(
         { id: user.id, role: user.role },
         process.env.JWT_SECRET!,

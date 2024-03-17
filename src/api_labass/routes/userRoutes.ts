@@ -3,8 +3,9 @@ import { Request, Response } from "express";
 import express from "express";
 import { container } from "tsyringe";
 import { UserController } from "../controllers/userController";
-// import { authMiddleware } from '../middlewares/authmiddleware';
 import { createUserValidation } from "../middlewares/validation/createUserValidation";
+import { AuthMiddleware } from "../middlewares/authMiddleware";
+import { userInfoValidation } from "../middlewares/validation/userInfoValidation";
 
 const userRouter = express.Router();
 const userController = container.resolve(UserController);
@@ -70,11 +71,15 @@ const userController = container.resolve(UserController);
  *                   example: "Error creating user"
  */
 userRouter.post("/user", createUserValidation, (req: Request, res: Response) =>
-  userController.createUser(req, res)
+  userController.createPartialUser(req, res)
 );
 
-userRouter.post("/user", (req: Request, res: Response) =>
-  userController.createUser(req, res)
+userRouter.post(
+  "/fillUserInfoAndCreatePatientProfile",
+  AuthMiddleware,
+  userInfoValidation,
+  (req: Request, res: Response) =>
+    userController.fillUserInfoandCreatePatient(req, res)
 );
 userRouter.get("/users/:id", (req: Request, res: Response) =>
   userController.getUser(req, res)
