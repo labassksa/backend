@@ -36,6 +36,12 @@ export class Consultation {
 
   @CreateDateColumn()
   createdAt!: Date;
+  // Add openedAt and closedAt columns
+  @Column({ type: "timestamp", nullable: true })
+  openedAt?: Date;
+
+  @Column({ type: "timestamp", nullable: true })
+  closedAt?: Date;
 
   @Column({
     type: "enum",
@@ -49,9 +55,9 @@ export class Consultation {
   chats!: ChatMessage[];
 
   // One-to-one relations to other consultation details
-  @OneToOne((type) => Prescription)
+  @OneToOne((type) => Prescription, { nullable: true })
   @JoinColumn()
-  prescription!: Prescription;
+  prescription?: Prescription;
 
   @Column({
     type: "enum",
@@ -60,11 +66,11 @@ export class Consultation {
   })
   status: ConsultationStatus = ConsultationStatus.New;
 
-  @OneToOne((type) => SOAP)
+  @OneToOne((type) => SOAP, { nullable: true })
   @JoinColumn()
-  soap!: SOAP;
+  soap?: SOAP;
 
-  @OneToOne((type) => SickLeave)
+  @OneToOne((type) => SickLeave, { nullable: true })
   @JoinColumn()
-  sickLeave!: SickLeave;
+  sickLeave?: SickLeave;
 }

@@ -11,15 +11,13 @@ const patientRouter = express.Router();
 const patientController = container.resolve(PatientController);
 
 patientRouter.post(
-  "/addDependent",
+  "/Dependent",
   dependentUserInfoValidation,
   AuthMiddleware,
   (req: Request, res: Response) => patientController.addDependent(req, res)
 );
-patientRouter.get(
-  "/getDependents",
-  AuthMiddleware,
-  (req: Request, res: Response) => patientController.getDependents(req, res)
+patientRouter.get("/Dependents", AuthMiddleware, (req: Request, res: Response) =>
+  patientController.getDependents(req, res)
 );
 
 export default patientRouter;

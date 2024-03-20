@@ -75,13 +75,13 @@ userRouter.post("/user", createUserValidation, (req: Request, res: Response) =>
 );
 
 userRouter.post(
-  "/fillUserInfoAndCreatePatientProfile",
+  "/CompleteProfile",
   AuthMiddleware,
   userInfoValidation,
   (req: Request, res: Response) =>
     userController.fillUserInfoandCreatePatient(req, res)
 );
-userRouter.get("/users/:id", (req: Request, res: Response) =>
+userRouter.get("/user", AuthMiddleware, (req: Request, res: Response) =>
   userController.getUser(req, res)
 );
 userRouter.put("/users/:id", (req: Request, res: Response) =>

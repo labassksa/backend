@@ -15,7 +15,11 @@ export class OTPController {
         return res.status(500).json({ error: "Failed to send OTP." });
       }
     } catch (error) {
-      return res.status(500).json({ error: error });
+      return res.status(500).json({
+        message: `Error sending OTP: ${
+          error instanceof Error ? error.message : error
+        }`,
+      });
     }
   };
 }

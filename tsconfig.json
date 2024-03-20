@@ -2,6 +2,7 @@
   "compilerOptions": {
     "target": "es2016",
     "lib": ["es6"],
+    "strictNullChecks": true,
     "resolveJsonModule": true,
     "module": "commonjs",
     "rootDir": "src",

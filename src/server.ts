@@ -13,6 +13,7 @@ import { container } from "tsyringe";
 import { AuthService } from "./api_labass/services/AuthService";
 import { OTPService } from "./api_labass/services/OTPService";
 import patientRouter from "./api_labass/routes/patientRoutes";
+import insuranceRouter from "./api_labass/routes/insuranceRoute";
 
 // Register services
 container.registerSingleton("AuthService", AuthService);
@@ -40,6 +41,7 @@ async function startServer() {
     app.use("/api_labass", otpRouter);
     app.use("/api_labass", authRouter);
     app.use('/api_labass', patientRouter);
+    app.use("/api_labass", insuranceRouter);
 
     app.listen(PORT, () => {
       console.log(`Server running on port ${PORT}`);

@@ -15,7 +15,7 @@ import { Insurance } from "./insurance";
 export class PatientProfile {
   @PrimaryGeneratedColumn()
   id!: number;
-  @OneToOne(() => Insurance, (insurance) => insurance.patientProfile, {
+  @OneToMany(() => Insurance, (insurance) => insurance.patientProfile, {
     nullable: true,
   })
   insurance?: Insurance; // Insurance is optional, defaulting to null

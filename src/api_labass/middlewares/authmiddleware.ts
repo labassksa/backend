@@ -37,7 +37,9 @@ export const AuthMiddleware = async (
 
     // User is found and not null here
     req.user = user;
-    console.log("Token is Valid")
+    console.log(`User object ${req.user}`);
+    console.log(`User id ${req.user.id}`);
+    console.log("Token is Valid");
     next(); // Token is valid, proceed to the next middleware
   } catch (error) {
     return res.status(401).json({ error: "Unauthorized: " + error });

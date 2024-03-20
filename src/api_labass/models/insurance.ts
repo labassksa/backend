@@ -1,9 +1,9 @@
 import {
   Entity,
   PrimaryGeneratedColumn,
-  OneToOne,
   JoinColumn,
   Column,
+  ManyToOne,
 } from "typeorm";
 import { PatientProfile } from "./patientProfile";
 
@@ -16,7 +16,7 @@ export class Insurance {
   @Column()
   provider!: string; // The name of the insurance provider
 
-  @Column()
+  @Column({ unique: true })
   policyNumber!: string; // Unique policy number
 
   @Column()
@@ -25,7 +25,7 @@ export class Insurance {
   @Column({ type: "date", nullable: true })
   expirationDate!: Date; // When the insurance policy expires
 
-  @OneToOne(() => PatientProfile, (patientProfile) => patientProfile.insurance)
+  @ManyToOne(() => PatientProfile, (patientProfile) => patientProfile.insurance)
   @JoinColumn()
   patientProfile!: PatientProfile;
 

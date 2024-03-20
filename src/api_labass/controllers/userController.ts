@@ -18,7 +18,11 @@ export class UserController {
       const user = await this.userService.createPartialUser(phoneNumber, role);
       res.status(201).json(user);
     } catch (error) {
-      res.status(500).json({ message: "Error creating user", error: error });
+      res.status(500).json({
+        message: `Error creating user: ${
+          error instanceof Error ? error.message : error
+        }`,
+      });
     }
   };
   fillUserInfoandCreatePatient = async (req: Request, res: Response) => {
@@ -51,8 +55,7 @@ export class UserController {
 
   getUser = async (req: Request, res: Response) => {
     try {
-      const { id } = req.params;
-      const user = await this.userService.findUserById(Number(id));
+      const user = await this.userService.findUserById(Number(req.user.id));
       if (!user) {
         return res.status(404).json({ message: "User not found" });
       }
@@ -89,8 +92,3 @@ export class UserController {
     }
   };
 }
-
-// // Assuming you have a way to handle DI, you would then export an instance of UserController
-// // This part is highly dependent on how DI is setup in your application
-// const userService = new UserService(); // This should be handled by your DI container in a real app
-// const userController = new UserController(userService);
