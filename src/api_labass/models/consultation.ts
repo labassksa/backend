@@ -38,7 +38,11 @@ export class Consultation {
   createdAt!: Date;
   // Add openedAt and closedAt columns
   @Column({ type: "timestamp", nullable: true })
-  openedAt?: Date;
+  doctorOpenedAT?: Date;
+  @Column({ type: "timestamp", nullable: true })
+  patientJoinedAT?: Date;
+  @Column({ type: "timestamp", nullable: true })
+  patientPaidAT?: Date;
 
   @Column({ type: "timestamp", nullable: true })
   closedAt?: Date;
@@ -62,9 +66,9 @@ export class Consultation {
   @Column({
     type: "enum",
     enum: ConsultationStatus,
-    default: ConsultationStatus.New,
+    default: ConsultationStatus.PendingPayment,
   })
-  status: ConsultationStatus = ConsultationStatus.New;
+  status: ConsultationStatus = ConsultationStatus.PendingPayment;
 
   @OneToOne((type) => SOAP, { nullable: true })
   @JoinColumn()

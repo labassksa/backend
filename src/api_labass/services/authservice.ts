@@ -15,7 +15,7 @@ export
 class AuthService {
   constructor(
     @inject(UserService) private userService: UserService,
-    @inject("OTPService") private otpService: OTPService
+    @inject(OTPService) private otpService: OTPService
   ) {}
 
   async verifyOTPAndAuthenticate(
