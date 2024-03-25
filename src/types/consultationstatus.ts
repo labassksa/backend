@@ -1,8 +1,8 @@
 export enum ConsultationStatus {
-    New = "new",
-    Open = "open",
-    Closed = "closed",
+    Paid = "Paid",
+    Open = "Open",
+    Closed = "Closed",
     PendingPayment = "PendingPayment",
-    AfterPayment = "afterPayment",
+    AfterPayment = "AfterPayment",
 
   }

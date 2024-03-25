@@ -22,7 +22,7 @@ class UserPatientFacade {
     try {
       let user = await this.userRepository.findOneBy({ id: userId });
       if (!user) {
-        throw new Error("User not found.");
+        throw new Error("User not found, signin first using otp");
       }
       console.log(user);
 

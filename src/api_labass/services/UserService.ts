@@ -16,6 +16,7 @@ export class UserService {
     try {
       // Create a new user instance with the provided information
       const newUser = this.userRepository.create({ ...dependentUserInfo });
+
       // Persist the new user instance to the database
       await this.userRepository.save(newUser);
       return newUser;

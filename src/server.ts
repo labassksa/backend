@@ -7,8 +7,6 @@ import userRouter from "./api_labass/routes/userRoutes";
 import otpRouter from "./api_labass/routes/otpRoute";
 import authRouter from "./api_labass/routes/authRoute";
 import { container } from "tsyringe";
-import { AuthService } from "./api_labass/services/AuthService";
-import { OTPService } from "./api_labass/services/OTPService";
 import patientRouter from "./api_labass/routes/patientRoutes";
 import insuranceRouter from "./api_labass/routes/insuranceRoute";
 import { ConsultationService } from "./api_labass/services/consultationService";

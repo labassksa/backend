@@ -7,6 +7,7 @@ import { createActor } from "xstate";
 import { UserService } from "./UserService";
 import { PatientService } from "./PatientService";
 import { ConsultationStatus } from "../../types/consultationstatus";
+import { PatientProfile } from "../models/patientProfile";
 
 @injectable()
 export class ConsultationService {
@@ -17,7 +18,10 @@ export class ConsultationService {
     private patientService: PatientService
   ) {}
 
-  async createConsultation(userId: number): Promise<Consultation> {
+  async createConsultation(
+    userId: number,
+    patientProfile: PatientProfile
+  ): Promise<Consultation> {
     try {
       // Use UserService to find user role or patient/doctor profile
       const user = await this.userService.findUserById(userId);
@@ -84,7 +88,7 @@ export class ConsultationService {
         console.log(
           `the current state from the subscriber inside the service is is is is ${snapshot.value} ${snapshot.context.consultationId}`
         );
-        if (snapshot.matches("new")) {
+        if (snapshot.matches("paid")) {
           // Handle new consultation logic, e.g., notify users
         }
       },
@@ -95,18 +99,32 @@ export class ConsultationService {
         // ...
       },
     });
+
+    // This event should be dispatched once informed by the Payment Service,
+    // Mark the consultation as "paid" and store the payment transaction ID
     consultationActor.send({
       type: "PAYMENT_SUCCESSFUL",
     });
+
+    // This event should be dispatched once the doctor sends it.
+    // The consultation doctorOpenedAt field should be updated in the database
     consultationActor.send({
       type: "DOCTOR_STARTS",
     });
-    // consultationActor.send({
-    //   type: "PATIENT_JOINS",
-    // });
 
-    const currentState = consultationActor.getSnapshot().value
-    const currentcontext = consultationActor.getSnapshot().context
+    // This event should be distpatched when the patient presses a button.
+    // check if the doctor has started or not and send back an apprpriate mesaage
+    consultationActor.send({
+      type: "PATIENT_JOINS",
+    });
+
+    // Chat should be checked if saved or not before the doctor ends the consultation
+    // A notification
+    consultationActor.send({
+      type: "END_CONSULTATION",
+    });
+    const currentState = consultationActor.getSnapshot().value;
+    const currentcontext = consultationActor.getSnapshot().context;
     console.log(
       `the current state after patient joined is:${currentState} , current context status ${currentcontext.status}`
     );

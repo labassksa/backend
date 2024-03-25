@@ -2,7 +2,6 @@ import { assign, setup, fromPromise, createActor } from "xstate";
 import { ConsultationStatus } from "../../types/consultationstatus";
 import { ConsultationService } from "./consultationService";
 import { container } from "tsyringe";
-import { resolve } from "path";
 
 async function updateConsultationStatus(
   consultationId: number,
@@ -70,6 +69,8 @@ const consultationMachine = setup({
     }),
     consoleLogValue: ({ context, event }) => {
       if (event.type === "DOCTOR_STARTS") {
+        event.type
+        //if Typegen is used No need for the if condtion
       }
     },
   },
@@ -91,20 +92,21 @@ const consultationMachine = setup({
     pendingPayment: {
       on: {
         PAYMENT_SUCCESSFUL: {
-          target: "new",
+          target: "paid",
         },
       },
-      exit: assign({ status: ({ context }) => ConsultationStatus.New }),
+      exit: assign({ status: ({ context }) => ConsultationStatus.Paid }),
     },
-    new: {
+    paid: {
       entry: assign({
-        status: ConsultationStatus.New,
+        status: ConsultationStatus.Paid,
       }),
       on: {
         DOCTOR_STARTS: {
           target: "afterPayment",
           actions: "consoleLogValue",
         },
+        // a notification should be sent for the customer that DOCTOR_STARTS
       },
       exit: [
         // Inline action
@@ -151,6 +153,8 @@ const consultationMachine = setup({
         END_CONSULTATION: {
           target: "closed",
         },
+      // a notification should be sent for the customer including the prescription 
+
       },
     },
     closed: {

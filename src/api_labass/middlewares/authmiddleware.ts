@@ -6,11 +6,14 @@ import jwt from "jsonwebtoken";
 import { container } from "tsyringe";
 import { UserService } from "../services/UserService";
 import { User } from "../models/user";
+import { PatientProfile } from "../models/patientProfile";
 
 declare global {
   namespace Express {
     interface Request {
       user: User;
+      patientProfile: PatientProfile;
+
     }
   }
 }
@@ -37,6 +40,7 @@ export const AuthMiddleware = async (
 
     // User is found and not null here
     req.user = user;
+
     console.log(`User object ${req.user}`);
     console.log(`User id ${req.user.id}`);
     console.log("Token is Valid");

@@ -1,4 +1,3 @@
-import { DataSource, Repository } from "typeorm";
 import { User } from "../models/user";
 import { PatientProfile } from "../models/patientProfile";
 import { inject, injectable } from "tsyringe";
@@ -6,12 +5,12 @@ import { UserService } from "./UserService";
 import AppDataSource from "../../configuration/ormconfig";
 import { Roles } from "../../types/roles";
 
+
 @injectable()
 export class PatientService {
-  private patientProfileRepository =
-    AppDataSource.getRepository(PatientProfile);
+  private patientProfileRepository = AppDataSource.getRepository(PatientProfile);
 
-  constructor(@inject(UserService) private userService: UserService) {}
+  constructor(@inject(UserService) private userService: UserService) { }
 
   async createPatientProfileForUser(
     user: User,
@@ -20,7 +19,6 @@ export class PatientService {
   ): Promise<PatientProfile | null> {
     try {
       // Retrieve the user using UserService
-
       if (role !== Roles.Patient) {
         // If the user's role is not "patient", do not create a PatientProfile
         console.log(
@@ -45,14 +43,14 @@ export class PatientService {
   // Ensure a user "completed his/her info" by having a PatientProfile
   async hasPatientProfile(
     userId: number
-  ): Promise<{ exists: boolean; profile?: PatientProfile; message?: string }> {
+  ) {
     try {
       const patientProfile = await this.patientProfileRepository.findOne({
         where: { user: { id: userId } },
       });
 
       if (patientProfile) {
-        return { exists: true, profile: patientProfile };
+        return { exists: true, profile: patientProfile, message: "Patient Profile exists" };
       } else {
         return { exists: false, message: "Patient profile does not exist." };
       }
