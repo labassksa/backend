@@ -1,5 +1,5 @@
 import express from "express";
-import { OTPController } from "../controllers/otpController";
+import { OTPController } from "../controllers/OTPController";
 import { sendOTPValidation } from "../middlewares/validation/sendOtpValidation";
 import { container } from "tsyringe";
 

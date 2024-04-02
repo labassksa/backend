@@ -36,6 +36,7 @@ import { Request, Response, NextFunction } from "express";
 
 export const dependentUserInfoValidation = [
   body("phoneNumber")
+    .optional()
     // Ensure phoneNumber starts with '0' and is 10 digits long
     .matches(/^0\d{9}$/)
     .withMessage("Phone number must start with 0 and be 10 digits long"),
@@ -48,7 +49,9 @@ export const dependentUserInfoValidation = [
   body("email").isEmail().withMessage("A valid email is required"),
   body("gender")
     .isIn(["male", "female", "other"])
-    .withMessage("Gender is required and must be 'male', or 'female. We accept only those hahahah "),
+    .withMessage(
+      "Gender is required and must be 'male', or 'female. We accept only those hahahah "
+    ),
   body("nationalId")
     .isLength({ max: 10, min: 10 })
     .withMessage("National ID is required"),

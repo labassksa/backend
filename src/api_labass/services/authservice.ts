@@ -9,12 +9,14 @@ import jwt from "jsonwebtoken";
 import { UserService } from "./UserService"; // Assuming you have this service
 import { OTPService } from "./OTPService"; // Your SMS verification service
 import { inject, injectable } from "tsyringe";
+import { PatientService } from "./PatientService";
 
 export
 @injectable()
 class AuthService {
   constructor(
     @inject(UserService) private userService: UserService,
+    @inject(PatientService) private patientService: PatientService,
     @inject(OTPService) private otpService: OTPService
   ) {}
 
@@ -34,14 +36,25 @@ class AuthService {
         user = await this.userService.createPartialUser(phoneNumber, role);
       }
 
+      //create patient profile for the user during sign in and use it later for the consultation and
+      const patient = await this.patientService.hasPatientProfile(user.id);
+      if (!patient.exists) {
+        await this.patientService.createPatient(user);
+      }
+
       // Generate JWT for the verified user, and log him in
       const token = jwt.sign(
-        { id: user.id, role: user.role },
+        {
+          id: user.id,
+          role: user.role,
+          patientProfile: patient.profile,
+        },
         process.env.JWT_SECRET!,
         {
           expiresIn: "24h",
         }
       );
+
       return token;
     } catch (error) {
       // Handle or log the error as appropriate for your application

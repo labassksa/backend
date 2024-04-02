@@ -8,8 +8,8 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
-import { Consultation } from "./consultation";
-import { User } from "./user";
+import { Consultation } from "./Consultation";
+import { User } from "./User";
 
 @Entity()
 export class DoctorProfile {

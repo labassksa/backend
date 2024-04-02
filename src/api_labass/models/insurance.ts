@@ -5,7 +5,7 @@ import {
   Column,
   ManyToOne,
 } from "typeorm";
-import { PatientProfile } from "./patientProfile";
+import { PatientProfile } from "./PatientProfile";
 
 @Entity()
 export class Insurance {

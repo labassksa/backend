@@ -1,13 +1,15 @@
 import { Repository } from "typeorm";
 import { injectable } from "tsyringe";
-import { Consultation } from "../models/consultation";
+import { Consultation } from "../models/Consultation";
 import AppDataSource from "../../configuration/ormconfig";
-import { consultationMachine } from "./consultationStateMachine"; // Adjust the import path
-import { createActor } from "xstate";
+import { consultationMachine } from "./ConsultationStateMachine";
+import { createActor, StateValue } from "xstate";
 import { UserService } from "./UserService";
 import { PatientService } from "./PatientService";
 import { ConsultationStatus } from "../../types/consultationstatus";
-import { PatientProfile } from "../models/patientProfile";
+import { PatientProfile } from "../models/PatientProfile";
+import { eventNames } from "process";
+import e from "express";
 
 @injectable()
 export class ConsultationService {
@@ -23,14 +25,10 @@ export class ConsultationService {
     patientProfile: PatientProfile
   ): Promise<Consultation> {
     try {
-      // Use UserService to find user role or patient/doctor profile
-      const user = await this.userService.findUserById(userId);
-      const patientProfileResult = await this.patientService.hasPatientProfile(
-        userId
-      );
-
-      const newConsultation = await this.consultationRepository.create({
-        patient: patientProfileResult.profile,
+      // The patient should be able to create a consultation without filling the profile, it should be completed after payment and before starting the consultation
+      // patientProfile = this.patientService.createProvile()
+      const newConsultation = this.consultationRepository.create({
+        patient: patientProfile,
       });
       const savedNewConsultation = await this.consultationRepository.save(
         newConsultation
@@ -44,109 +42,181 @@ export class ConsultationService {
     }
   }
 
-  async updateConsultationStatus({
-    consultationId,
-    newStatus,
-  }: {
-    consultationId: number;
-    newStatus: ConsultationStatus;
-  }) {
-    try {
-      const consultationRepository = AppDataSource.getRepository(Consultation);
-      const consultationToUpdate = await consultationRepository.findOne({
-        where: { id: consultationId },
-      });
+  // Other service methods...
+  async getConsultation(id: number): Promise<Consultation> {
+    const consultation = await this.consultationRepository.findOneBy({ id });
+    if (!consultation) {
+      throw new Error(`Consultation with ID ${id} not found.`);
+    }
+    return consultation;
+  }
 
-      if (!consultationToUpdate) {
-        console.log(`Consultation with ID ${consultationId} not found.`);
-        throw Error();
-      }
+  async updateConsultation(
+    id: number,
+    updateData: Partial<Consultation>
+  ): Promise<Consultation> {
+    await this.consultationRepository.update(id, updateData);
+    return this.getConsultation(id);
+  }
 
-      consultationToUpdate.status = newStatus;
-      const updatedConsultationStatus = await consultationRepository.save(
-        consultationToUpdate
-      );
-      console.error(
-        `Saved Status inside consultationService: ${updatedConsultationStatus.status}`
-      );
-      return updatedConsultationStatus;
-    } catch (error) {
-      console.error("Failed to update consultation status:", error);
+  async deleteConsultation(id: number): Promise<void> {
+    const deletionResult = await this.consultationRepository.delete(id);
+    if (deletionResult.affected === 0) {
+      throw new Error(`Consultation with ID ${id} not found.`);
+    }
+  }
+
+  async improvedupdateStatus(consultationId: number, eventType: string) {
+    let consultationToUpdate = await this.consultationRepository.findOne({
+      where: { id: consultationId },
+    });
+
+    if (!consultationToUpdate) {
+      console.error(`Consultation with ID ${consultationId} not found.`);
       throw new Error(`Consultation with ID ${consultationId} not found.`);
     }
-    // Delay of 1 second
-  }
 
-  async updateStatus(consultationId: number) {
+    // Prepare the actor with the current state
+    const currentStateFromDB = consultationToUpdate.status;
     const consultationActor = createActor(consultationMachine, {
-      input: {
-        consultationId: consultationId,
-      },
+      input: { consultationId },
+      snapshot: consultationMachine.resolveState({
+        value: currentStateFromDB,
+        context: {
+          consultationId,
+          hasDoctorJoined: !!consultationToUpdate.doctorJoinedAT,
+          // Add other context properties as needed
+        },
+      }),
     }).start();
-    const subscription = consultationActor.subscribe({
-      next(snapshot) {
-        console.log(
-          `the current state from the subscriber inside the service is is is is ${snapshot.value} ${snapshot.context.consultationId}`
-        );
-        if (snapshot.matches("paid")) {
-          // Handle new consultation logic, e.g., notify users
+
+    // Handle the event based on the event type
+    switch (eventType) {
+      case "PAYMENT_SUCCESSFUL":
+        consultationToUpdate.patientPaidAT = new Date();
+        consultationToUpdate.status = ConsultationStatus.Paid;
+        consultationActor.on("PAYMENT_SUCCESSFUL", async (event) => {
+          console.error(
+            `Hello from inside actor on from the improved updatestatus
+            `
+          );
+        });
+        consultationActor.send({ type: "PAYMENT_SUCCESSFUL" });
+        break;
+      case "DOCTOR_STARTS":
+        consultationToUpdate.doctorJoinedAT = new Date();
+        consultationToUpdate.status = ConsultationStatus.AfterPayment;
+
+        consultationActor.send({ type: "DOCTOR_STARTS" });
+        break;
+      case "PATIENT_JOINS":
+        if (consultationToUpdate.doctorJoinedAT) {
+          consultationToUpdate.patientJoinedAT = new Date();
+          consultationToUpdate.status = ConsultationStatus.Open;
+
+          consultationActor.send({ type: "PATIENT_JOINS" });
+        } else {
+          console.error("Doctor has not joined yet.");
+          // Handle the case when the doctor hasn't joined
         }
-      },
-      error(err) {
-        // ...
-      },
-      complete() {
-        // ...
-      },
-    });
+        break;
+      case "END_CONSULTATION":
+        consultationToUpdate.closedAt = new Date();
+        consultationToUpdate.status = ConsultationStatus.Closed;
 
-    // This event should be dispatched once informed by the Payment Service,
-    // Mark the consultation as "paid" and store the payment transaction ID
-    consultationActor.send({
-      type: "PAYMENT_SUCCESSFUL",
-    });
+        consultationActor.send({ type: "END_CONSULTATION" });
+        break;
+      default:
+        console.error(`Unhandled event type: ${eventType}`);
+        break;
+    }
 
-    // This event should be dispatched once the doctor sends it.
-    // The consultation doctorOpenedAt field should be updated in the database
-    consultationActor.send({
-      type: "DOCTOR_STARTS",
-    });
-
-    // This event should be distpatched when the patient presses a button.
-    // check if the doctor has started or not and send back an apprpriate mesaage
-    consultationActor.send({
-      type: "PATIENT_JOINS",
-    });
-
-    // Chat should be checked if saved or not before the doctor ends the consultation
-    // A notification
-    consultationActor.send({
-      type: "END_CONSULTATION",
-    });
-    const currentState = consultationActor.getSnapshot().value;
-    const currentcontext = consultationActor.getSnapshot().context;
-    console.log(
-      `the current state after patient joined is:${currentState} , current context status ${currentcontext.status}`
-    );
-    // console.log(`current status ${currentState}`)
-    // const persistedState = consultationMachineActor.getPersistedSnapshot();
-    // const snapshot = consultationMachineActor.getSnapshot();
-    // console.log(`persistedState is:  ${persistedState}.`);
-    // console.log(`snapshot is: ${snapshot}.`);
-    // consultationMachineActor.send({
-    //   type: "PAYMENT_SUCCESSFUL",
-    // });
-    // console.log(`persistedState is:  ${persistedState}.`);
-    // console.log(`snapshot is: ${snapshot.context}.`);
-    // consultationMachineActor.send({
-    //   type: "DOCTOR_STARTS",
-    // });
-    // consultationMachineActor.send({
-    //   type: "PATIENT_JOINS",
-    // });
-    // consultationMachineActor.send({
-    //   type: "END_CONSULTATION",
-    // });
+    // Persist the changes in the database
+    try {
+      const updatedConsultationStatus = await this.consultationRepository.save(
+        consultationToUpdate
+      );
+      console.log(
+        `Data persisted for consultation ID ${consultationId}:`,
+        updatedConsultationStatus
+      );
+    } catch (error) {
+      console.error(
+        `Failed to persist changes for consultation ID ${consultationId}:`,
+        error
+      );
+      throw error;
+    }
   }
-  // Other service methods...
+
+  async updateStatusfrominvokedActor(
+    this: any,
+    consultationId: number,
+    status: ConsultationStatus
+  ) {
+    const consultationToUpdate = await this.consultationRepository.findOne({
+      where: { id: consultationId },
+    });
+
+    if (!consultationToUpdate) {
+      console.error(`Consultation with ID ${consultationId} not found.`);
+      throw new Error(`Consultation with ID ${consultationId} not found.`);
+    }
+
+    const consultationActor = createActor(consultationMachine, {
+      input: { consultationId },
+      // Ensure you've initialized the actor with the current state appropriately
+    }).start();
+
+    let updateData = {};
+
+    switch (status) {
+      case ConsultationStatus.Paid:
+        updateData = {
+          patientPaidAT: new Date(),
+        };
+        consultationActor.send({ type: "PAYMENT_SUCCESSFUL" });
+        break;
+      case ConsultationStatus.AfterPayment:
+        updateData = {
+          doctorJoinedAT: new Date(),
+        };
+        consultationActor.send({ type: "DOCTOR_STARTS" });
+        break;
+      case ConsultationStatus.Open:
+        if (consultationToUpdate.doctorJoinedAT) {
+          updateData = {
+            patientJoinedAT: new Date(),
+          };
+          consultationActor.send({ type: "PATIENT_JOINS" });
+        } else {
+          console.error("Doctor has not joined yet.");
+        }
+        break;
+      case ConsultationStatus.Closed:
+        updateData = {
+          closedAt: new Date(),
+        };
+        consultationActor.send({ type: "END_CONSULTATION" });
+        break;
+      default:
+        console.error(`Unhandled status: ${status}`);
+        break;
+    }
+
+    // Update changes in the database
+    try {
+      await this.consultationRepository.updateConsultation(
+        { id: consultationId },
+        updateData
+      );
+      console.log(`Data updated for consultation ID ${consultationId}`);
+    } catch (error) {
+      console.error(
+        `Failed to update changes for consultation ID ${consultationId}:`,
+        error
+      );
+      throw error;
+    }
+  }
 }

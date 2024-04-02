@@ -1,6 +1,6 @@
 // src/routes.ts
 import express from "express";
-import { AuthController } from "../controllers/authController";
+import { AuthController } from "../controllers/AuthController";
 import { authValidation } from "../middlewares/validation/authValidation";
 import { container } from "tsyringe";
 
@@ -14,5 +14,6 @@ authRouter.post(
   // AuthMiddleware,
   authController.verifyOTPAndAuthenticate
 );
+
 
 export default authRouter;

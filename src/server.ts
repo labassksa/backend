@@ -9,7 +9,8 @@ import authRouter from "./api_labass/routes/authRoute";
 import { container } from "tsyringe";
 import patientRouter from "./api_labass/routes/patientRoutes";
 import insuranceRouter from "./api_labass/routes/insuranceRoute";
-import { ConsultationService } from "./api_labass/services/consultationService";
+import { ConsultationService } from "./api_labass/services/ConsultationService";
+import consultationRouter from "./api_labass/routes/consultationRoute";
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -30,6 +31,7 @@ async function startServer() {
     app.use("/api_labass", authRouter);
     app.use("/api_labass", patientRouter);
     app.use("/api_labass", insuranceRouter);
+    app.use("/api_labass", consultationRouter);
     app.listen(PORT, () => {
       console.log(`Server running on port ${PORT}`);
     });
@@ -41,7 +43,10 @@ async function startServer() {
     // const createdConsultation = await consultationService.createConsultation(
     //   userId
     // );
-     await consultationService.updateStatus(20)
+    await consultationService.improvedupdateStatus( 46 , "PAYMENT_SUCCESSFUL");
+    await consultationService.improvedupdateStatus(46 , "DOCTOR_STARTS");
+    await consultationService.improvedupdateStatus(46 , "PATIENT_JOINS");
+    await consultationService.improvedupdateStatus(46, "END_CONSULTATION");
 
     // console.log("Created consultation:", createdConsultation);
   } catch (error) {

@@ -2,6 +2,10 @@ import { body, validationResult } from "express-validator";
 import { Request, Response, NextFunction } from "express";
 
 export const authValidation = [
+  body("phoneNumber")
+  // Use regex to enforce that phoneNumber starts with '0' and is 10 digits long
+  .matches(/^0\d{9}$/)
+  .withMessage("Phone number must start with 0 and be 10 digits long"),
   body("otpcode")
     .exists()
     .withMessage(

@@ -1,9 +1,9 @@
 import { Request, Response, NextFunction } from "express";
 import { container } from "tsyringe";
 import { PatientService } from "../services/PatientService"; // Adjust the import path to where your PatientService is located
-import { PatientProfile } from "../models/patientProfile";
+import { PatientProfile } from "../models/PatientProfile";
 
-async function ensurePatientProfileCompleted(
+async function isPatientProfileCompleted(
   req: Request,
   res: Response,
   next: NextFunction
@@ -28,16 +28,15 @@ async function ensurePatientProfileCompleted(
       return res.status(400).send({ message: message });
       // If the profile exists, attach it to the request object
     }
+    // attach patient profile to the request
     req.patientProfile = profile;
     next(); // Proceed to the next middleware/route handler
   } catch (error) {
-    console.error("Middleware error checking for patient profile:", error);
-    return res
-      .status(500)
-      .send({
-        message: "Internal server error while checking patient profile.",
-      });
+    console.error(" Middleware error checking for patient profile:", error);
+    return res.status(500).send({
+      message: "Internal server error while checking patient profile.",
+    });
   }
 }
 
-export { ensurePatientProfileCompleted };
+export { isPatientProfileCompleted };

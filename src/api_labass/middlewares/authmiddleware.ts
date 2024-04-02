@@ -5,15 +5,14 @@ import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
 import { container } from "tsyringe";
 import { UserService } from "../services/UserService";
-import { User } from "../models/user";
-import { PatientProfile } from "../models/patientProfile";
+import { User } from "../models/User";
+import { PatientProfile } from "../models/PatientProfile";
 
 declare global {
   namespace Express {
     interface Request {
       user: User;
       patientProfile: PatientProfile;
-
     }
   }
 }

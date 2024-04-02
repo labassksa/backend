@@ -1,6 +1,5 @@
 import { Request, Response } from "express";
 import { injectable, inject } from "tsyringe";
-import { UserPatientFacade } from "../services/userPatientFacadeService";
 import { UserService } from "../services/UserService";
 
 
@@ -8,7 +7,6 @@ import { UserService } from "../services/UserService";
 @injectable()
 export class UserController {
   constructor(
-    @inject(UserPatientFacade) private userPatientFacade: UserPatientFacade,
     @inject(UserService) private userService: UserService
   ) {}
 
@@ -25,28 +23,20 @@ export class UserController {
       });
     }
   };
-  fillUserInfoandCreatePatient = async (req: Request, res: Response) => {
+
+  completeUserInfo = async (req: Request, res: Response) => {
     const userInfo = req.body;
 
     try {
-      // Validate request data as necessary
-      if (!userInfo) {
-        return res.status(400).send({ message: "Missing required fields" });
-      }
-
       // Call the service method to fill user info and create patient profile
-      const user = await this.userPatientFacade.fillUserInfoAndCreatePatient(
-        req.user.id,
-        userInfo,
-        req.user.role
-      );
-
+      const user = await this.userService.completeUserInfo(req.user, userInfo);
+      console.log(`user inside user info in patient controller: ${user}`);
       // If successful, return the updated user
       res.status(200).json(user);
     } catch (error) {
-      console.error("Error in fillUserInfoandCreatePatient:", error);
+      console.error("Error in fillUserInfo", error);
       res.status(500).send({
-        message: `Error updating user info: ${
+        message: `Error completing user info: ${
           error instanceof Error ? error.message : error
         }`,
       });
@@ -91,4 +81,6 @@ export class UserController {
       res.status(500).json({ message: "Error deleting user", error: error });
     }
   };
+
+  
 }

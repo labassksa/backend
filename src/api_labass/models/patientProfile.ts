@@ -7,37 +7,43 @@ import {
   OneToOne,
   PrimaryGeneratedColumn,
 } from "typeorm";
-import { User } from "./user";
-import { Consultation } from "./consultation";
-import { Insurance } from "./insurance";
+import { User } from "./User";
+import { Consultation } from "./Consultation";
+import { Insurance } from "./Insurance";
 
 @Entity()
 export class PatientProfile {
   @PrimaryGeneratedColumn()
   id!: number;
+
   @OneToMany(() => Insurance, (insurance) => insurance.patientProfile, {
     nullable: true,
   })
-  insurance?: Insurance; // Insurance is optional, defaulting to null
+  insurance?: Insurance[]; // Insurance is optional, defaulting to null
 
   @OneToOne((type) => User)
   @JoinColumn()
   user!: User; // Relate to the User model
 
-  @Column({ nullable: true })
-  guardianId?: number; // ID of the guardian's PatientProfile, if this profile is for a dependent
+  // @Column({ nullable: true })
+  // guardianId?: number; // ID of the guardian's PatientProfile, if this profile is for a dependent
 
   @OneToMany(() => PatientProfile, (dependent) => dependent.guardian, {
     nullable: true,
   })
   dependents?: PatientProfile[];
 
-  @ManyToOne(() => PatientProfile, (guardian) => guardian.dependents, {
-    nullable: true,
-  })
+  @ManyToOne(
+    () => PatientProfile,
+    (patientProfile) => patientProfile.dependents,
+    { nullable: true }
+  )
+  @JoinColumn({ name: "guardianId" }) // This explicitly names the foreign key column
   guardian?: PatientProfile;
 
   // Relationships to consultations and prescriptions
-  @OneToMany((type) => Consultation, (consultation) => consultation.patient)
+  @OneToMany((type) => Consultation, (consultation) => consultation.patient, {
+    nullable: true,
+  })
   consultations?: Consultation[];
 }

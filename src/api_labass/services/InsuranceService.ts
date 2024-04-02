@@ -1,6 +1,6 @@
 import { injectable, inject } from "tsyringe";
 import { Repository } from "typeorm";
-import { Insurance } from "../models/insurance";
+import { Insurance } from "../models/Insurance";
 import { PatientService } from "./PatientService";
 import AppDataSource from "../../configuration/ormconfig";
 
@@ -122,12 +122,6 @@ export class InsuranceService {
       const patientProfileResult = await this.patientService.hasPatientProfile(
         userId
       );
-      if (!patientProfileResult.exists) {
-        throw new Error(
-          patientProfileResult.message ||
-            "Patient profile does not exist for the given user ID."
-        );
-      }
 
       // Now that we have confirmed the user has a patient profile, we retrieve all insurances linked to him.
       const insurances = await this.insuranceRepository.find({

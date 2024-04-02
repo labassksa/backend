@@ -11,7 +11,7 @@ export class User {
   id!: number; //By using !, you're informing TypeScript that the id field will be populated
   //by some mechanism outside the constructor (in this case, by TypeORM when the entity is persisted).
 
-  @Column({ unique: true })
+  @Column({ unique: true, nullable: true })
   phoneNumber?: string; // Essential for registration/login
 
   @Column({ nullable: true })
@@ -26,7 +26,7 @@ export class User {
   @Column({ nullable: true })
   gender?: string;
 
-  @Column({ nullable: true, unique: true })
+  @Column({ unique: true, nullable: true })
   nationalId?: string;
 
   @Column("date", { nullable: true })

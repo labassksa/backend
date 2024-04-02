@@ -8,14 +8,14 @@ import {
   JoinColumn,
   Column,
 } from "typeorm";
-import { DoctorProfile } from "./doctorProfile";
-import { PatientProfile } from "./patientProfile";
+import { DoctorProfile } from "./DoctorProfile";
+import { PatientProfile } from "./PatientProfile";
 import { ConsultationType } from "../../types/consultation_types";
 import { ConsultationStatus } from "../../types/consultationstatus";
-import { Prescription } from "./prescription";
-import { SOAP } from "./soap";
-import { SickLeave } from "./sickLeave";
-import { ChatMessage } from "./chatMessage";
+import { Prescription } from "./Prescription";
+import { SOAP } from "./Soap";
+import { SickLeave } from "./SickLeave";
+import { ChatMessage } from "./ChatMessage";
 
 @Entity()
 export class Consultation {
@@ -32,15 +32,17 @@ export class Consultation {
     (type) => DoctorProfile,
     (doctorProfile) => doctorProfile.consultations
   )
-  doctor!: DoctorProfile;
+  doctor?: DoctorProfile;
 
   @CreateDateColumn()
-  createdAt!: Date;
+  createdAt: Date = new Date();
   // Add openedAt and closedAt columns
   @Column({ type: "timestamp", nullable: true })
-  doctorOpenedAT?: Date;
+  doctorJoinedAT?: Date;
+
   @Column({ type: "timestamp", nullable: true })
   patientJoinedAT?: Date;
+
   @Column({ type: "timestamp", nullable: true })
   patientPaidAT?: Date;
 
@@ -54,9 +56,10 @@ export class Consultation {
   })
   type!: ConsultationType;
 
+
   // Chats are tied to consultations, not users
   @OneToMany((type) => ChatMessage, (chat) => chat.consultation)
-  chats!: ChatMessage[];
+  chats?: ChatMessage[];
 
   // One-to-one relations to other consultation details
   @OneToOne((type) => Prescription, { nullable: true })

@@ -5,7 +5,7 @@ import {
   JoinColumn,
   Column,
 } from "typeorm";
-import { Consultation } from "./consultation";
+import { Consultation } from "./Consultation";
 
 @Entity()
 export class SickLeave {
