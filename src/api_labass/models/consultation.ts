@@ -34,9 +34,10 @@ export class Consultation {
   )
   doctor?: DoctorProfile;
 
+  //dates
   @CreateDateColumn()
   createdAt: Date = new Date();
-  // Add openedAt and closedAt columns
+
   @Column({ type: "timestamp", nullable: true })
   doctorJoinedAT?: Date;
 
@@ -56,13 +57,12 @@ export class Consultation {
   })
   type!: ConsultationType;
 
-
   // Chats are tied to consultations, not users
   @OneToMany((type) => ChatMessage, (chat) => chat.consultation)
   chats?: ChatMessage[];
 
   // One-to-one relations to other consultation details
-  @OneToOne((type) => Prescription, { nullable: true })
+  @OneToOne((type) => Prescription, { cascade: true, nullable: true })
   @JoinColumn()
   prescription?: Prescription;
 
@@ -73,11 +73,11 @@ export class Consultation {
   })
   status: ConsultationStatus = ConsultationStatus.PendingPayment;
 
-  @OneToOne((type) => SOAP, { nullable: true })
+  @OneToOne((type) => SOAP, { cascade: true, nullable: true })
   @JoinColumn()
   soap?: SOAP;
 
-  @OneToOne((type) => SickLeave, { nullable: true })
+  @OneToOne((type) => SickLeave, { cascade: true, nullable: true })
   @JoinColumn()
   sickLeave?: SickLeave;
 }

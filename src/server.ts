@@ -11,6 +11,8 @@ import patientRouter from "./api_labass/routes/patientRoutes";
 import insuranceRouter from "./api_labass/routes/insuranceRoute";
 import { ConsultationService } from "./api_labass/services/ConsultationService";
 import consultationRouter from "./api_labass/routes/consultationRoute";
+import prescriptionRouter from "./api_labass/routes/prescriptionRoute";
+import { soapRouter } from "./api_labass/routes/SOAPRoute";
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -32,6 +34,8 @@ async function startServer() {
     app.use("/api_labass", patientRouter);
     app.use("/api_labass", insuranceRouter);
     app.use("/api_labass", consultationRouter);
+    app.use("/api_labass", prescriptionRouter);
+    app.use("/api_labass", soapRouter);
     app.listen(PORT, () => {
       console.log(`Server running on port ${PORT}`);
     });
@@ -43,10 +47,12 @@ async function startServer() {
     // const createdConsultation = await consultationService.createConsultation(
     //   userId
     // );
-    await consultationService.improvedupdateStatus( 46 , "PAYMENT_SUCCESSFUL");
-    await consultationService.improvedupdateStatus(46 , "DOCTOR_STARTS");
-    await consultationService.improvedupdateStatus(46 , "PATIENT_JOINS");
-    await consultationService.improvedupdateStatus(46, "END_CONSULTATION");
+
+    //simulate a consultation
+    // await consultationService.improvedupdateStatus( 46 , "PAYMENT_SUCCESSFUL");
+    // await consultationService.improvedupdateStatus(46 , "DOCTOR_STARTS");
+    // await consultationService.improvedupdateStatus(46 , "PATIENT_JOINS");
+    // await consultationService.improvedupdateStatus(46, "END_CONSULTATION");
 
     // console.log("Created consultation:", createdConsultation);
   } catch (error) {

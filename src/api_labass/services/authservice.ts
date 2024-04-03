@@ -36,7 +36,7 @@ class AuthService {
         user = await this.userService.createPartialUser(phoneNumber, role);
       }
 
-      //create patient profile for the user during sign in and use it later for the consultation and
+      //create patient profile for the user during sign in and use it later for the consultation
       const patient = await this.patientService.hasPatientProfile(user.id);
       if (!patient.exists) {
         await this.patientService.createPatient(user);

@@ -42,7 +42,7 @@ export class InsuranceService {
         );
       }
 
-      // Fetch insurance data from external API
+      // Fetch insurance data from external Insurance company API
       const insuranceData = await fetchInsuranceDataFromAPI(nationalId!);
 
       const insurance = this.insuranceRepository.create({

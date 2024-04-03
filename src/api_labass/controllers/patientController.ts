@@ -11,7 +11,7 @@ import { PatientService } from "../services/PatientService";
 //   }
 // }
 export
-@injectable() // Use @autoInjectable for classes that might be instantiated without the container.
+@injectable() 
 class PatientController {
   constructor(
     @inject(PatientService) private patientService: PatientService // Mark as optional to allow instantiation without container

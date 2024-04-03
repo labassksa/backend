@@ -4,6 +4,7 @@ import { container } from "tsyringe";
 import { InsuranceController } from "../controllers/InsuranceController";
 import { AuthMiddleware } from "../middlewares/authMiddleware";
 import { isPatientProfileCompleted } from "../middlewares/CheckPatientProfileExistance";
+import { checkUserInfoCompletion } from "../middlewares/CheckUserInfoCompletion";
 // Import any necessary validations here, such as for updating insurance details
 
 const insuranceRouter = express.Router();
@@ -14,6 +15,7 @@ insuranceRouter.post(
   "/linkInsurance",
   AuthMiddleware,
   isPatientProfileCompleted,
+  checkUserInfoCompletion,
   (req: Request, res: Response) => insuranceController.linkInsurance(req, res)
 );
 

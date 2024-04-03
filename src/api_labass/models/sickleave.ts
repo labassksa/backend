@@ -13,7 +13,6 @@ export class SickLeave {
   id!: number;
 
   @OneToOne(() => Consultation)
-  @JoinColumn()
   consultation!: Consultation; // Direct link to the consultation, accessing patient and doctor details through it
 
   @Column("date")

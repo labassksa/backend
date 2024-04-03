@@ -44,7 +44,7 @@ export class ConsultationService {
 
   // Other service methods...
   async getConsultation(id: number): Promise<Consultation> {
-    const consultation = await this.consultationRepository.findOneBy({ id });
+    const consultation = await this.consultationRepository.findOneBy({ id  });
     if (!consultation) {
       throw new Error(`Consultation with ID ${id} not found.`);
     }
@@ -57,6 +57,17 @@ export class ConsultationService {
   ): Promise<Consultation> {
     await this.consultationRepository.update(id, updateData);
     return this.getConsultation(id);
+  }
+
+  //This method is designed to be used by Prescription, SOAP, and Sick leave to issue/update 
+  //a consultation with the the associated field
+  async saveConsultation(
+    consultation: Partial<Consultation>
+  ): Promise<Consultation> {
+    const savedConsultation = await this.consultationRepository.save(
+      consultation
+    );
+    return savedConsultation;
   }
 
   async deleteConsultation(id: number): Promise<void> {

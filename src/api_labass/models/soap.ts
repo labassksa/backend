@@ -25,6 +25,5 @@ export class SOAP {
   plan!: string; // Treatment plan (e.g., "Sick leave for 1 day")
 
   @OneToOne(() => Consultation, (consultation) => consultation.soap)
-  @JoinColumn()
   consultation!: Consultation;
 }

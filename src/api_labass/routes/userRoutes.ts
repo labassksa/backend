@@ -6,8 +6,7 @@ import { UserController } from "../controllers/UserController";
 import { createUserValidation } from "../middlewares/validation/createUserValidation";
 import { AuthMiddleware } from "../middlewares/authMiddleware";
 import { userInfoValidation } from "../middlewares/validation/userInfoValidation";
-// Import the checkUserInfoCompletion middleware
-import { checkUserInfoCompletion } from "../middlewares/CheckUserInfoCompletion";
+
 
 const userRouter = express.Router();
 const userController = container.resolve(UserController);
