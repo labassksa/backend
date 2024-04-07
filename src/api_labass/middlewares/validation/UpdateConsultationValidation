@@ -1,19 +1,19 @@
-import { body, validationResult } from 'express-validator';
-import { Request, Response, NextFunction } from 'express';
+// import { body, validationResult } from 'express-validator';
+// import { Request, Response, NextFunction } from 'express';
 
-export const updateConsultationValidation = [
-  // Validate and sanitize fields.
-  body('doctorOpenedAT').optional().isISO8601().toDate(),
-  body('patientJoinedAT').optional().isISO8601().toDate(),
-  body('patientPaidAT').optional().isISO8601().toDate(),
-  // Add other fields as necessary.
+// export const updateConsultationValidation = [
+//   // Validate and sanitize fields.
+//   body('doctorOpenedAT').optional().isISO8601().toDate(),
+//   body('patientJoinedAT').optional().isISO8601().toDate(),
+//   body('patientPaidAT').optional().isISO8601().toDate(),
+//   // Add other fields as necessary.
 
-  // Custom middleware to check for validation errors.
-  (req: Request, res: Response, next: NextFunction) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
-    }
-    next();
-  },
-];
+//   // Custom middleware to check for validation errors.
+//   (req: Request, res: Response, next: NextFunction) => {
+//     const errors = validationResult(req);
+//     if (!errors.isEmpty()) {
+//       return res.status(400).json({ errors: errors.array() });
+//     }
+//     next();
+//   },
+// ];

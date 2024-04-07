@@ -12,7 +12,11 @@ import insuranceRouter from "./api_labass/routes/insuranceRoute";
 import { ConsultationService } from "./api_labass/services/ConsultationService";
 import consultationRouter from "./api_labass/routes/consultationRoute";
 import prescriptionRouter from "./api_labass/routes/prescriptionRoute";
-import { soapRouter } from "./api_labass/routes/SOAPRoute";
+import soapRouter from "./api_labass/routes/SOAPRoute";
+import sickLeaveRouter from "./api_labass/routes/sickLeaveRoute";
+import marketerRouter from "./api_labass/routes/marketerRoute";
+import { PromotionalCode } from "./api_labass/models/PromotionalCode";
+import promoCodeRouter from "./api_labass/routes/PromoCodeRoute";
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -36,17 +40,15 @@ async function startServer() {
     app.use("/api_labass", consultationRouter);
     app.use("/api_labass", prescriptionRouter);
     app.use("/api_labass", soapRouter);
+    app.use("/api_labass", sickLeaveRouter);
+    app.use("/api_labass", marketerRouter);
+    app.use("/api_labass", promoCodeRouter);
+
     app.listen(PORT, () => {
       console.log(`Server running on port ${PORT}`);
     });
     // Resolve ConsultationService from the container
     const consultationService = container.resolve(ConsultationService);
-
-    // Example call to createConsultation - replace userId with a valid user ID from your system
-    // const userId = 2; // Placeholder user ID
-    // const createdConsultation = await consultationService.createConsultation(
-    //   userId
-    // );
 
     //simulate a consultation
     // await consultationService.improvedupdateStatus( 46 , "PAYMENT_SUCCESSFUL");

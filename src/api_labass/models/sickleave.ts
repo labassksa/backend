@@ -4,6 +4,8 @@ import {
   OneToOne,
   JoinColumn,
   Column,
+  CreateDateColumn,
+  UpdateDateColumn,
 } from "typeorm";
 import { Consultation } from "./Consultation";
 
@@ -21,8 +23,11 @@ export class SickLeave {
   @Column("date")
   endDate!: Date; // End date of the sick leave
 
-  @Column("text", { nullable: true })
-  diagnosis!: string; // Diagnosis or reason for sick leave, optional for flexibility
+  //dates
+  @CreateDateColumn()
+  createdAt!: Date;
 
+  @UpdateDateColumn()
+  lastUpdatedAt?: Date;
   // Other necessary fields like issuedOn date can be inferred from consultation details
 }

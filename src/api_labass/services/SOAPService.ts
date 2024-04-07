@@ -14,15 +14,11 @@ export class SOAPService {
   ) {}
 
   async issueOrUpdateSOAP(consultationId: number, soapData: Partial<SOAP>) {
-    // This direct call from SOAP service should be adjusted to call the consultation service instead of Directly using the consultation repo
-    const consultation = await this.consultationRepository.findOne({
-      where: { id: consultationId },
-      relations: ["soap"],
-    });
-    // If no consultation found, throw an error
-    if (!consultation) {
-      throw new Error(`Consultation with ID ${consultationId} not found.`);
-    }
+    const consultation =
+      await this.consultationService.getConsultationWithRelatedEntity(
+        consultationId,
+        "prescription"
+      );
 
     let soap = consultation.soap || new SOAP();
     Object.assign(soap, soapData);
@@ -34,11 +30,11 @@ export class SOAPService {
   async getSOAPByConsultationId(
     consultationId: number
   ): Promise<SOAP | undefined> {
-    // This direct call from SOAP service should be adjusted to call the consultation service instead of Directly using the consultation repo
-    const consultation = await this.consultationRepository.findOne({
-      where: { id: consultationId },
-      relations: ["soap"],
-    });
+    const consultation =
+      await this.consultationService.getConsultationWithRelatedEntity(
+        consultationId,
+        "soap"
+      );
     // If no consultation found, throw an error
     if (!consultation) {
       throw new Error(`Consultation with ID ${consultationId} not found.`);

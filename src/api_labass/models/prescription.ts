@@ -71,7 +71,7 @@ export class Prescription {
   createdAt!: Date;
 
   @UpdateDateColumn()
-  updatedAt?: Date;
+  lastUpdatedAt?: Date;
 
   // Additional fields like primary diagnosis, secondary diagnosis, etc., can be added as needed.
 }

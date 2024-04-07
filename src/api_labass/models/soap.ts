@@ -4,6 +4,8 @@ import {
   Column,
   OneToOne,
   JoinColumn,
+  CreateDateColumn,
+  UpdateDateColumn,
 } from "typeorm";
 import { Consultation } from "./Consultation";
 
@@ -26,4 +28,11 @@ export class SOAP {
 
   @OneToOne(() => Consultation, (consultation) => consultation.soap)
   consultation!: Consultation;
+
+   //dates
+   @CreateDateColumn()
+   createdAt!: Date;
+ 
+   @UpdateDateColumn()
+   lastUpdatedAt?: Date;
 }

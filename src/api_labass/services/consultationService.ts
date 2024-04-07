@@ -43,12 +43,38 @@ export class ConsultationService {
   }
 
   // Other service methods...
-  async getConsultation(id: number): Promise<Consultation> {
-    const consultation = await this.consultationRepository.findOneBy({ id  });
+  async getConsultationById(id: number): Promise<Consultation> {
+    const consultation = await this.consultationRepository.findOneBy({ id });
     if (!consultation) {
       throw new Error(`Consultation with ID ${id} not found.`);
     }
     return consultation;
+  }
+
+  async getAllConsultationsForPatient(
+    patientId: number
+  ): Promise<Consultation[]> {
+    // Use find() to retrieve all consultations for a given patientId
+    const consultations = await this.consultationRepository.find({
+      where: { patient: { id: patientId } },
+      relations: [
+        "doctor",
+        "patient",
+        "chats",
+        "prescription",
+        "soap",
+        "sickLeave",
+      ],
+    });
+
+    if (consultations.length === 0) {
+      // If no consultations found, throw an error or handle as needed
+      throw new Error(
+        `No consultations found for patient with ID ${patientId}.`
+      );
+    }
+
+    return consultations;
   }
 
   async updateConsultation(
@@ -56,11 +82,11 @@ export class ConsultationService {
     updateData: Partial<Consultation>
   ): Promise<Consultation> {
     await this.consultationRepository.update(id, updateData);
-    return this.getConsultation(id);
+    return this.getConsultationById(id);
   }
 
-  //This method is designed to be used by Prescription, SOAP, and Sick leave to issue/update 
-  //a consultation with the the associated field
+  //These methods is designed to be used by Prescription, SOAP, and Sick leave to issue/update a consultation
+  // and retrieve a consultation with the the related entity
   async saveConsultation(
     consultation: Partial<Consultation>
   ): Promise<Consultation> {
@@ -68,6 +94,21 @@ export class ConsultationService {
       consultation
     );
     return savedConsultation;
+  }
+
+  // Other service methods...
+  async getConsultationWithRelatedEntity(
+    id: number,
+    relatedEntity: string
+  ): Promise<Consultation> {
+    const consultation = await this.consultationRepository.findOne({
+      where: { id: id },
+      relations: [relatedEntity],
+    });
+    if (!consultation) {
+      throw new Error(`Consultation with ID ${id} not found.`);
+    }
+    return consultation;
   }
 
   async deleteConsultation(id: number): Promise<void> {

@@ -3,7 +3,9 @@ import {
   PrimaryGeneratedColumn,
   Column,
   CreateDateColumn,
+  OneToOne,
 } from "typeorm";
+import { MarketerProfile } from "./Marketer";
 
 @Entity()
 export class User {
@@ -37,4 +39,9 @@ export class User {
 
   @CreateDateColumn()
   createdAt: Date = new Date();
+
+  @OneToOne(() => MarketerProfile, (marketerProfile) => marketerProfile.user, {
+    nullable: true,
+  })
+  marketerProfile?: MarketerProfile;
 }

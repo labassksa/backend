@@ -54,6 +54,17 @@ export class UserController {
       res.status(500).json({ message: "Error fetching user", error: error });
     }
   };
+  getUsers = async (req: Request, res: Response) => {
+    try {
+      const users = await this.userService.getUsers();
+      if (!users) {
+        return res.status(404).json({ message: "Users not found" });
+      }
+      res.status(200).json(users);
+    } catch (error) {
+      res.status(500).json({ message: "Error fetching user", error: error });
+    }
+  };
 
   updateUser = async (req: Request, res: Response) => {
     try {

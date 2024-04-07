@@ -1,10 +1,16 @@
 // controllers/consultationController.ts
 import { Request, Response } from "express";
-import { container } from "tsyringe";
+import { container, inject, injectable } from "tsyringe";
 import { ConsultationService } from "../services/ConsultationService";
-import { PatientProfile } from "../models/PatientProfile";
 
+
+@injectable()
 export class ConsultationController {
+  constructor(
+    @inject(ConsultationService)
+    private consultationService: ConsultationService
+  ) {}
+
   async createConsultation(req: Request, res: Response) {
     const { patientProfile } = req;
     console.error(`patient profile from create consultation ${patientProfile}`); // Assuming patientProfile is passed directly or derived from userId
@@ -26,14 +32,23 @@ export class ConsultationController {
     }
   }
 
-  // Existing code...
-
-  async getConsultation(req: Request, res: Response) {
+  async getConsultationById(req: Request, res: Response) {
     const { id } = req.params;
     try {
-      const consultation = await container
-        .resolve(ConsultationService)
-        .getConsultation(Number(id));
+      const consultation = await this.consultationService.getConsultationById(
+        Number(id)
+      );
+      res.json(consultation);
+    } catch (error) {
+      console.error("Error getting consultation:", error);
+      res.status(404).send({ message: "Consultation not found" });
+    }
+  }
+  async getAllConsultationsforPatient(req: Request, res: Response) {
+    const patientId = req.user.id;
+    try {
+      const consultation =
+        await this.consultationService.getAllConsultationsForPatient(patientId);
       res.json(consultation);
     } catch (error) {
       console.error("Error getting consultation:", error);
@@ -50,13 +65,13 @@ export class ConsultationController {
           id
         )}`
       );
-      console.error(
-        `the consultation updateData is ${updateData}`
-      );
-      const idAsnumber = Number(id)
-      const updatedConsultation = await container
-        .resolve(ConsultationService)
-        .updateConsultation(idAsnumber, updateData);
+      console.error(`the consultation updateData is ${updateData}`);
+      const idAsnumber = Number(id);
+      const updatedConsultation =
+        await this.consultationService.updateConsultation(
+          idAsnumber,
+          updateData
+        );
       res.json(updatedConsultation);
     } catch (error) {
       console.error("Error updating consultation:", error);
@@ -67,9 +82,7 @@ export class ConsultationController {
   async deleteConsultation(req: Request, res: Response) {
     const { id } = req.params;
     try {
-      await container
-        .resolve(ConsultationService)
-        .deleteConsultation(Number(id));
+      await this.consultationService.deleteConsultation(Number(id));
       res.status(204).send();
     } catch (error) {
       console.error("Error deleting consultation:", error);

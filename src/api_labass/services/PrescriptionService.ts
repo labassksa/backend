@@ -26,19 +26,11 @@ export class PrescriptionService {
     consultationId: number,
     prescriptionData: Partial<Prescription>
   ) {
-    // Attempt to find the consultation with its prescription loaded
-    const consultation = await this.consultationRepository.findOne({
-      where: { id: consultationId },
-      relations: ["prescription"],
-    });
-    // const consultation = await this.consultationService.getConsultation(
-    //   consultationId
-    // );
-
-    // If no consultation found, throw an error
-    if (!consultation) {
-      throw new Error(`Consultation with ID ${consultationId} not found.`);
-    }
+    const consultation =
+      await this.consultationService.getConsultationWithRelatedEntity(
+        consultationId,
+        "prescription"
+      );
 
     // If a prescription exists, update it; otherwise, create a new Prescription object
     let prescription = consultation.prescription || new Prescription();
@@ -52,21 +44,15 @@ export class PrescriptionService {
     await this.consultationService.saveConsultation(consultation);
   }
 
-  /**
-   * Retrieves the prescription for a given consultation ID.
-   *
-   * param {number} consultationId - The ID of the consultation to retrieve the prescription for.
-   * returns {Prescription | undefined} The found prescription, or undefined if no prescription is found.
-   */
   async getPrescriptionByConsultationId(
     consultationId: number
   ): Promise<Prescription | undefined> {
-    const consultation = await this.consultationRepository.findOne({
-      where: { id: consultationId },
-      relations: ["prescription"],
-    });
-
-    return consultation?.prescription;
+    const consultation =
+      await this.consultationService.getConsultationWithRelatedEntity(
+        consultationId,
+        "prescription"
+      );
+    return consultation.prescription;
   }
 
   // Include additional methods for other common operations as needed

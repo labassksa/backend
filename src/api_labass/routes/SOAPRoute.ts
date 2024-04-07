@@ -20,4 +20,4 @@ soapRouter.get(
   soapController.getSOAPByConsultationId
 );
 
-export { soapRouter };
+export  default soapRouter ;

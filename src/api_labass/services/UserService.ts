@@ -7,8 +7,16 @@ export class UserService {
   private readonly userRepository = AppDataSource.getRepository(User);
   constructor() {}
 
-  async createPartialUser(phoneNumber: string, role: string): Promise<User> {
-    const user = this.userRepository.create({ phoneNumber, role });
+  async createPartialUser(
+    role: string,
+    phoneNumber?: string,
+    extraData?: Partial<User>
+  ): Promise<User> {
+    const user = this.userRepository.create({
+      phoneNumber,
+      role,
+      ...extraData,
+    });
     await this.userRepository.save(user);
     return user;
   }
@@ -46,6 +54,20 @@ export class UserService {
 
       // For other errors, rethrow the generic error
       throw new Error(`Failed to create dependent user. ${error}`);
+    }
+  }
+
+  async getUsers(){
+    try {
+      const users = await this.userRepository.find();
+      if (!users) {
+        throw new Error("User not found.");
+      }
+      return users;
+    } catch (error) {
+      // Handle or log the error as appropriate
+      console.error(`An error occurred while finding user by ID: ${error}`);
+      throw error; // Rethrow the error if you want calling code to handle it
     }
   }
 

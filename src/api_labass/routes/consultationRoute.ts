@@ -1,11 +1,12 @@
 // routes/consultationRoutes.ts
-import express from "express";
+import express, { Request, Response } from "express";
 import { ConsultationController } from "../controllers/ConsultationController";
 import { AuthMiddleware } from "../middlewares/authMiddleware";
 import { isPatientProfileCompleted } from "../middlewares/CheckPatientProfileExistance";
+import { container } from "tsyringe";
 
 const consultationRouter = express.Router();
-const consultationController = new ConsultationController();
+const consultationController = container.resolve(ConsultationController);
 
 // Route for creating a new consultation
 consultationRouter.post(
@@ -20,7 +21,15 @@ consultationRouter.get(
   AuthMiddleware,
   // this middleware will attach the patient profile to the request
   isPatientProfileCompleted,
-  (req, res) => consultationController.getConsultation(req, res)
+  (req, res) => consultationController.getConsultationById(req, res)
+);
+
+consultationRouter.get(
+  "/consultations",
+  AuthMiddleware,
+  // this middleware will attach the patient profile to the request
+  isPatientProfileCompleted,
+  (req, res) => consultationController.getAllConsultationsforPatient(req, res)
 );
 
 consultationRouter.put(

@@ -11,7 +11,7 @@ import { PatientService } from "../services/PatientService";
 //   }
 // }
 export
-@injectable() 
+@injectable()
 class PatientController {
   constructor(
     @inject(PatientService) private patientService: PatientService // Mark as optional to allow instantiation without container
