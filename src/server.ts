@@ -4,19 +4,20 @@ import "dotenv/config";
 import express from "express";
 import { AppDataSource, OTPDataSource } from "./configuration/ormconfig";
 import userRouter from "./api_labass/routes/userRoutes";
-import otpRouter from "./api_labass/routes/otpRoute";
+import otpRouter from "./api_labass/routes/otpRoutes";
 import authRouter from "./api_labass/routes/authRoute";
 import { container } from "tsyringe";
 import patientRouter from "./api_labass/routes/patientRoutes";
-import insuranceRouter from "./api_labass/routes/insuranceRoute";
+import insuranceRouter from "./api_labass/routes/insuranceRoutes";
 import { ConsultationService } from "./api_labass/services/ConsultationService";
-import consultationRouter from "./api_labass/routes/consultationRoute";
-import prescriptionRouter from "./api_labass/routes/prescriptionRoute";
-import soapRouter from "./api_labass/routes/SOAPRoute";
-import sickLeaveRouter from "./api_labass/routes/sickLeaveRoute";
-import marketerRouter from "./api_labass/routes/marketerRoute";
+import consultationRouter from "./api_labass/routes/consultationRoutes";
+import prescriptionRouter from "./api_labass/routes/prescriptionRoutes";
+import soapRouter from "./api_labass/routes/SOAPRoutes";
+import sickLeaveRouter from "./api_labass/routes/sickLeaveRoutes";
+import marketerRouter from "./api_labass/routes/marketerRoutes";
 import { PromotionalCode } from "./api_labass/models/PromotionalCode";
-import promoCodeRouter from "./api_labass/routes/PromoCodeRoute";
+import promoCodeRouter from "./api_labass/routes/PromoCodeRoutes";
+import doctorRouter from "./api_labass/routes/doctorRoutes";
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -43,6 +44,7 @@ async function startServer() {
     app.use("/api_labass", sickLeaveRouter);
     app.use("/api_labass", marketerRouter);
     app.use("/api_labass", promoCodeRouter);
+    app.use("/api_labass", doctorRouter);
 
     app.listen(PORT, () => {
       console.log(`Server running on port ${PORT}`);
@@ -51,10 +53,10 @@ async function startServer() {
     const consultationService = container.resolve(ConsultationService);
 
     //simulate a consultation
-    // await consultationService.improvedupdateStatus( 46 , "PAYMENT_SUCCESSFUL");
-    // await consultationService.improvedupdateStatus(46 , "DOCTOR_STARTS");
-    // await consultationService.improvedupdateStatus(46 , "PATIENT_JOINS");
-    // await consultationService.improvedupdateStatus(46, "END_CONSULTATION");
+    // await consultationService.improvedupdateStatus( 2 , "PAYMENT_SUCCESSFUL");
+    // await consultationService.improvedupdateStatus(2 , "DOCTOR_STARTS");
+    // await consultationService.improvedupdateStatus(2 , "PATIENT_JOINS");
+    // await consultationService.improvedupdateStatus(2, "END_CONSULTATION");
 
     // console.log("Created consultation:", createdConsultation);
   } catch (error) {

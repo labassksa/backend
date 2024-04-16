@@ -42,7 +42,7 @@ class OTPService {
         expiry,
       });
       const savedotpRecord = await this.otpRepository.save(otpRecord);
-      console.log(`Saved OTP:  ${savedotpRecord}`);
+      console.log(`Saved OTP:  ${savedotpRecord.code}`);
       return true;
     } catch (error) {
       console.error("Error sending OTP:", error);
@@ -50,7 +50,11 @@ class OTPService {
     }
   }
 
-  async verifyCode(phoneNumber: string, otpcode: string): Promise<boolean> {
+  async verifyCode(
+    role: string,
+    phoneNumber: string,
+    otpcode: string
+  ): Promise<boolean> {
     try {
       // Retrieve the OTP record by phoneNumber
       const otpDetails = await this.otpRepository.findOneBy({ phoneNumber });
@@ -80,8 +84,8 @@ class OTPService {
       } else {
         throw new Error("OTP verification failed. Incorrect code.");
       }
-    } catch (error) {
-      console.error("Error verifying OTP:", error);
+    } catch (error:any) {
+      console.error("Error verifying OTP:", error.message);
       // Depending on your application's error handling strategy, you might want to:
       // - Log the error to a logging service
       // - Map the error to a user-friendly message or error code

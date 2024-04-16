@@ -10,6 +10,7 @@ import { UserService } from "./UserService"; // Assuming you have this service
 import { OTPService } from "./OTPService"; // Your SMS verification service
 import { inject, injectable } from "tsyringe";
 import { PatientService } from "./PatientService";
+import { Roles } from "../../types/roles";
 
 export
 @injectable()
@@ -21,24 +22,24 @@ class AuthService {
   ) {}
 
   async verifyOTPAndAuthenticate(
+    role: string,
     phoneNumber: string,
-    otpcode: string,
-    role: string
+    otpcode: string
   ): Promise<string> {
     try {
       // Await the OTP verification. An error will be thrown and caught below if verification fails.
-      await this.otpService.verifyCode(phoneNumber, otpcode);
+      await this.otpService.verifyCode(role, phoneNumber, otpcode);
 
       // Proceed with finding the user if the user record exists
       let user = await this.userService.findUserByPhoneNumber(phoneNumber);
       //or Proceed with creating the user since OTP verification succeeded and the user would like to register
       if (!user) {
-        user = await this.userService.createPartialUser(phoneNumber, role);
+        user = await this.userService.createPartialUser(role,phoneNumber );
       }
 
-      //create patient profile for the user during sign in and use it later for the consultation
+      //create patient profile for the user during sign in and use it later for fetching consultation/consultations related to the patient
       const patient = await this.patientService.hasPatientProfile(user.id);
-      if (!patient.exists) {
+      if (!patient.exists && role === Roles.Patient) {
         await this.patientService.createPatient(user);
       }
 

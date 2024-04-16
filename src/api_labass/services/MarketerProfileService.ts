@@ -19,16 +19,32 @@ export class MarketerProfileService {
       organizationIban?: string;
     }
   ): Promise<MarketerProfile> {
-    // Extract marketer-specific data that shouldn't go into the user table
-    const { iban, organizationName, organizationIban, ...userData } =
-      marketerUserData;
+    // Extract nationalId along with marketer-specific data
+    const {
+      iban,
+      organizationName,
+      organizationIban,
+      nationalId,
+      ...userData
+    } = marketerUserData;
 
+    // Prepare userData without nationalId initially
+    const preparedUserData: Partial<User> = {
+      ...userData,
+      phoneNumber: userData.phoneNumber, // Assuming phoneNumber is handled separately or doesn't require special handling
+    };
+
+    // Only re-attach nationalId to userData if it's not an empty string
+    if (nationalId && nationalId !== "") {
+      preparedUserData.nationalId = nationalId;
+    }
     // Create a new User instance for the marketer with the role 'marketer' and additional user data
     const user = await this.userService.createPartialUser(
       Roles.Marketer,
       marketerUserData.phoneNumber,
-      userData
+      preparedUserData
     );
+
     // Create a new MarketerProfile linked to the User
     const marketerProfile = this.marketerProfileRepository.create({
       user,
@@ -57,15 +73,28 @@ export class MarketerProfileService {
   async getMarketerProfileByIdWithPromotionalCodes(
     marketerId: number
   ): Promise<MarketerProfile | null> {
-    return this.marketerProfileRepository.findOne({
+    const marketerProfile = this.marketerProfileRepository.findOne({
       where: { id: marketerId },
-      relations: ["user", "promotionalCodes"],
+      relations: [
+        "user",
+        "promotionalCodes",
+        "promotionalCodes.marketerProfile",
+      ],
     });
+    if (!marketerProfile) {
+      throw new Error("MarketerProfile not found");
+    }
+    return marketerProfile;
   }
 
+  //All marketers, for admin access
   async getAllMarketerProfilesWithUserDetails(): Promise<MarketerProfile[]> {
     return this.marketerProfileRepository.find({
-      relations: ["user", "promotionalCodes"],
+      relations: [
+        "user",
+        "promotionalCodes",
+        "promotionalCodes.marketerProfile",
+      ],
     });
   }
   // Include other operations related to marketers as needed

@@ -9,9 +9,9 @@ export class AuthController {
     try {
       const { phoneNumber, otpcode, role } = req.body;
       const token = await this.authService.verifyOTPAndAuthenticate(
+        role,
         phoneNumber,
-        otpcode,
-        role
+        otpcode
       );
       return res.status(200).json({ token });
     } catch (error) {

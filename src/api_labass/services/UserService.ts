@@ -12,13 +12,37 @@ export class UserService {
     phoneNumber?: string,
     extraData?: Partial<User>
   ): Promise<User> {
-    const user = this.userRepository.create({
-      phoneNumber,
-      role,
-      ...extraData,
-    });
-    await this.userRepository.save(user);
-    return user;
+    try {
+  
+      const user = this.userRepository.create({
+        role,
+        phoneNumber,
+        ...extraData,
+      });
+      await this.userRepository.save(user);
+      return user;
+    } catch (error: any) {
+      // Check if error is an instance of QueryFailedError and it is a unique constraint violation
+      if (
+        error.name === "QueryFailedError" &&
+        error.driverError &&
+        error.driverError.code === "23505"
+      ) {
+        // You can customize the error message by checking the fields in 'error.driverError.detail'
+        if (error.driverError.detail.includes("phoneNumber")) {
+          throw new Error(
+            "phone number already exists."
+          );
+        }
+        if (error.driverError.detail.includes("nationalId")) {
+          throw new Error(
+            "national ID already exists."
+          );
+        }
+      }
+      // For other errors, rethrow the generic error
+      throw new Error(`Failed to create marketer user. ${error}`);
+    }
   }
 
   async createDependentUser(dependentUserInfo: Partial<User>): Promise<User> {
@@ -42,12 +66,12 @@ export class UserService {
         // You can customize the error message by checking the fields in 'error.driverError.detail'
         if (error.driverError.detail.includes("phoneNumber")) {
           throw new Error(
-            "Failed to create dependent user: phone number already exists."
+            "phone number already exists."
           );
         }
         if (error.driverError.detail.includes("nationalId")) {
           throw new Error(
-            "Failed to create dependent user: national ID already exists."
+            "national ID already exists."
           );
         }
       }
@@ -57,7 +81,7 @@ export class UserService {
     }
   }
 
-  async getUsers(){
+  async getUsers() {
     try {
       const users = await this.userRepository.find();
       if (!users) {

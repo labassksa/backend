@@ -2,18 +2,14 @@ import { Request, Response } from "express";
 import { injectable, inject } from "tsyringe";
 import { UserService } from "../services/UserService";
 
-
-
 @injectable()
 export class UserController {
-  constructor(
-    @inject(UserService) private userService: UserService
-  ) {}
+  constructor(@inject(UserService) private userService: UserService) {}
 
   createPartialUser = async (req: Request, res: Response) => {
     try {
       const { phoneNumber, role } = req.body;
-      const user = await this.userService.createPartialUser(phoneNumber, role);
+      const user = await this.userService.createPartialUser(role, phoneNumber);
       res.status(201).json(user);
     } catch (error) {
       res.status(500).json({
@@ -92,6 +88,4 @@ export class UserController {
       res.status(500).json({ message: "Error deleting user", error: error });
     }
   };
-
-  
 }

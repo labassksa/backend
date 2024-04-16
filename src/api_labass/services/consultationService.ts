@@ -158,6 +158,7 @@ export class ConsultationService {
       case "DOCTOR_STARTS":
         consultationToUpdate.doctorJoinedAT = new Date();
         consultationToUpdate.status = ConsultationStatus.AfterPayment;
+        //assign a doctor for the consultation
 
         consultationActor.send({ type: "DOCTOR_STARTS" });
         break;

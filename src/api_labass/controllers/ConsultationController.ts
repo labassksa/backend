@@ -3,7 +3,6 @@ import { Request, Response } from "express";
 import { container, inject, injectable } from "tsyringe";
 import { ConsultationService } from "../services/ConsultationService";
 
-
 @injectable()
 export class ConsultationController {
   constructor(
@@ -45,14 +44,15 @@ export class ConsultationController {
     }
   }
   async getAllConsultationsforPatient(req: Request, res: Response) {
-    const patientId = req.user.id;
+    //the pstient profile is attached to the request by using the 
+    const patientId = req.patientProfile.id;
     try {
       const consultation =
         await this.consultationService.getAllConsultationsForPatient(patientId);
       res.json(consultation);
     } catch (error) {
       console.error("Error getting consultation:", error);
-      res.status(404).send({ message: "Consultation not found" });
+      res.status(404).send({ message: "Consultations not found" });
     }
   }
 

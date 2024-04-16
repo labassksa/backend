@@ -18,22 +18,26 @@ export class DoctorProfile {
 
   @Column()
   specialty!: string;
+
+  @Column({ nullable: true })
+  iban?: string; // Marketer's IBAN for financial transactions
+  
   @Column()
-  medicalLiscenceNumber!: string;
+  medicalLicenseNumber!: string;
 
   @OneToOne((type) => User)
   @JoinColumn()
   user!: User; // Relate to the User model
 
-  // Online/Offline status
-  @Column({ default: false })
-  isOnline!: boolean;
+  // // Online/Offline status
+  // @Column({ default: false })
+  // isOnline!: boolean;
 
-  @UpdateDateColumn()
-  lastOnlineAt!: Date; // Tracks when the doctor was last set as online
+  // @UpdateDateColumn()
+  // lastOnlineAt!: Date; // Tracks when the doctor was last set as online
 
-  @UpdateDateColumn()
-  lastOfflineAt!: Date; // Tracks when the doctor was last set as offline
+  // @UpdateDateColumn()
+  // lastOfflineAt!: Date; // Tracks when the doctor was last set as offline
   // Relationship to consultations
   @OneToMany((type) => Consultation, (consultation) => consultation.doctor)
   consultations?: Consultation[];
