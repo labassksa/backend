@@ -1,8 +1,8 @@
 // routes/consultationRoutes.ts
 import express, { Request, Response } from "express";
-import { ConsultationController } from "../controllers/ConsultationController";
+import { ConsultationController } from "../controllers/consultationController";
 import { AuthMiddleware } from "../middlewares/authMiddleware";
-import { isPatientProfileCompleted } from "../middlewares/CheckPatientProfileExistance";
+import { isPatientProfileCompleted } from "../middlewares/checkPatientProfileExistance";
 import { container } from "tsyringe";
 
 const consultationRouter = express.Router();

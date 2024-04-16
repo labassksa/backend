@@ -1,8 +1,8 @@
-import { SOAP } from "../models/Soap";
+import { SOAP } from "../models/soap";
 import { injectable, inject } from "tsyringe";
-import { ConsultationService } from "./ConsultationService";
+import { ConsultationService } from "./consultationService";
 import AppDataSource from "../../configuration/ormconfig";
-import { Consultation } from "../models/Consultation";
+import { Consultation } from "../models/consultation";
 
 @injectable()
 export class SOAPService {

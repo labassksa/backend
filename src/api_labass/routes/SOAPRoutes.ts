@@ -1,8 +1,8 @@
 import express from "express";
 import { container } from "tsyringe";
-import { SOAPController } from "../controllers/SOAPController";
+import { SOAPController } from "../controllers/soapController";
 import { AuthMiddleware } from "../middlewares/authMiddleware";
-import { soapValidationRules } from "../middlewares/validation/SOAPValidation";
+import { soapValidationRules } from "../middlewares/validation/soapValidation";
 
 const soapRouter = express.Router();
 const soapController = container.resolve(SOAPController);

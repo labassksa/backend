@@ -6,8 +6,8 @@ import {
   JoinColumn,
   OneToMany,
 } from "typeorm";
-import { PromotionalCode } from "./PromotionalCode";
-import { User } from "./User";
+import { PromotionalCode } from "./promotionalCode";
+import { User } from "./user";
 
 @Entity()
 export class MarketerProfile {

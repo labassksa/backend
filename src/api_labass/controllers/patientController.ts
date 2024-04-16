@@ -1,7 +1,7 @@
 // patientController.ts
 import { Request, Response } from "express";
 import { inject, injectable } from "tsyringe";
-import { PatientService } from "../services/PatientService";
+import { PatientService } from "../services/patientService";
 
 // declare global {
 //   namespace Express {

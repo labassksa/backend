@@ -1,10 +1,10 @@
 // insuranceRoutes.ts
 import express, { Request, Response } from "express";
 import { container } from "tsyringe";
-import { InsuranceController } from "../controllers/InsuranceController";
+import { InsuranceController } from "../controllers/insuranceController";
 import { AuthMiddleware } from "../middlewares/authMiddleware";
-import { isPatientProfileCompleted } from "../middlewares/CheckPatientProfileExistance";
-import { checkUserInfoCompletion } from "../middlewares/CheckUserInfoCompletion";
+import { isPatientProfileCompleted } from "../middlewares/checkPatientProfileExistance";
+import { checkUserInfoCompletion } from "../middlewares/checkUserInfoCompletion";
 // Import any necessary validations here, such as for updating insurance details
 
 const insuranceRouter = express.Router();
@@ -20,8 +20,10 @@ insuranceRouter.post(
 );
 
 // Update insurance details by ID
-insuranceRouter.put("/insurance:id", AuthMiddleware, (req: Request, res: Response) =>
-  insuranceController.updateInsurance(req, res)
+insuranceRouter.put(
+  "/insurance:id",
+  AuthMiddleware,
+  (req: Request, res: Response) => insuranceController.updateInsurance(req, res)
 );
 
 // Get insurance details by ID

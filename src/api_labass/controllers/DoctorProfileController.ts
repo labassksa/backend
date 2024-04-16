@@ -1,7 +1,7 @@
 // Assuming this file is located at: controllers/DoctorProfileController.ts
 import { Request, Response } from "express";
 import { injectable, inject } from "tsyringe";
-import { DoctorProfileService } from "../services/DoctorProfileService";
+import { DoctorProfileService } from "../services/doctorProfileService";
 
 @injectable()
 export class DoctorProfileController {

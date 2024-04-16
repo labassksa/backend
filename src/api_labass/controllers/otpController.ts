@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { OTPService } from "../services/OTPService";
+import { OTPService } from "../services/otpService";
 import { container, inject, injectable } from "tsyringe";
 
 @injectable()

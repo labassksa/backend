@@ -1,7 +1,7 @@
 // controllers/consultationController.ts
 import { Request, Response } from "express";
 import { container, inject, injectable } from "tsyringe";
-import { ConsultationService } from "../services/ConsultationService";
+import { ConsultationService } from "../services/consultationService";
 
 @injectable()
 export class ConsultationController {
@@ -44,7 +44,7 @@ export class ConsultationController {
     }
   }
   async getAllConsultationsforPatient(req: Request, res: Response) {
-    //the pstient profile is attached to the request by using the 
+    //the pstient profile is attached to the request by using the
     const patientId = req.patientProfile.id;
     try {
       const consultation =

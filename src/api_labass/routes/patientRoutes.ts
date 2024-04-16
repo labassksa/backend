@@ -1,13 +1,13 @@
 // patientRoutes.ts
 import { Request, Response } from "express";
 import express from "express";
-import { PatientController } from "../controllers/PatientController";
+import { PatientController } from "../controllers/patientController";
 import { dependentUserInfoValidation } from "../middlewares/validation/addDependentValidation";
 import { AuthMiddleware } from "../middlewares/authMiddleware";
 import { container } from "tsyringe";
-import { UserController } from "../controllers/UserController";
+import { UserController } from "../controllers/userController";
 import { userInfoValidation } from "../middlewares/validation/userInfoValidation";
-import { isPatientProfileCompleted } from "../middlewares/CheckPatientProfileExistance";
+import { isPatientProfileCompleted } from "../middlewares/checkPatientProfileExistance";
 
 const patientRouter = express.Router();
 const patientController = container.resolve(PatientController);

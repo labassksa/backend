@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { injectable, inject } from "tsyringe";
-import { PrescriptionService } from "../services/PrescriptionService";
+import { PrescriptionService } from "../services/prescriptionService";
 
 @injectable()
 export class PrescriptionController {

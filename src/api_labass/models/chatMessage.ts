@@ -6,8 +6,8 @@ import {
   CreateDateColumn,
   JoinColumn,
 } from "typeorm";
-import { User } from "./User";
-import { Consultation } from "./Consultation";
+import { User } from "./user";
+import { Consultation } from "./consultation";
 
 @Entity()
 export class ChatMessage {

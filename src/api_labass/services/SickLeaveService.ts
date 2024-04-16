@@ -1,6 +1,6 @@
 import { injectable } from "tsyringe";
-import { SickLeave } from "../models/SickLeave";
-import { ConsultationService } from "./ConsultationService";
+import { SickLeave } from "../models/sickLeave";
+import { ConsultationService } from "./consultationService";
 
 @injectable()
 export class SickLeaveService {

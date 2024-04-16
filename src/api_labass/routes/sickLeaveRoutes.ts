@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import express from "express";
 import { container } from "tsyringe";
-import { SickLeaveController } from "../controllers/SickLeaveController";
+import { SickLeaveController } from "../controllers/sickLeaveController";
 import { AuthMiddleware } from "../middlewares/authMiddleware";
 import { sickLeaveValidationRules } from "../middlewares/validation/sickLeaveValidation";
 

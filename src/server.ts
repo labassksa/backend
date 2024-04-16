@@ -9,13 +9,13 @@ import authRouter from "./api_labass/routes/authRoute";
 import { container } from "tsyringe";
 import patientRouter from "./api_labass/routes/patientRoutes";
 import insuranceRouter from "./api_labass/routes/insuranceRoutes";
-import { ConsultationService } from "./api_labass/services/ConsultationService";
+import { ConsultationService } from "./api_labass/services/consultationService";
 import consultationRouter from "./api_labass/routes/consultationRoutes";
 import prescriptionRouter from "./api_labass/routes/prescriptionRoutes";
-import soapRouter from "./api_labass/routes/SOAPRoutes";
+import soapRouter from "./api_labass/routes/soapRoutes";
 import sickLeaveRouter from "./api_labass/routes/sickLeaveRoutes";
 import marketerRouter from "./api_labass/routes/marketerRoutes";
-import { PromotionalCode } from "./api_labass/models/PromotionalCode";
+import { PromotionalCode } from "./api_labass/models/promotionalCode";
 import promoCodeRouter from "./api_labass/routes/PromoCodeRoutes";
 import doctorRouter from "./api_labass/routes/doctorRoutes";
 

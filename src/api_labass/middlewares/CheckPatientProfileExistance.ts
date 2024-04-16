@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import { container } from "tsyringe";
-import { PatientService } from "../services/PatientService"; // Adjust the import path to where your PatientService is located
-import { PatientProfile } from "../models/PatientProfile";
+import { PatientService } from "../services/patientService"; // Adjust the import path to where your PatientService is located
+import { PatientProfile } from "../models/patientProfile";
 
 async function isPatientProfileCompleted(
   req: Request,

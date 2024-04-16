@@ -1,6 +1,6 @@
 import { assign, setup, fromPromise, createActor, emit } from "xstate";
 import { ConsultationStatus } from "../../types/consultationstatus";
-import { ConsultationService } from "./ConsultationService";
+import { ConsultationService } from "./consultationService";
 import { container } from "tsyringe";
 
 // async function updateConsultationStatus(

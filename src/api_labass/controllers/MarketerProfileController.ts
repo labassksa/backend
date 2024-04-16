@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { injectable, inject } from "tsyringe";
-import { MarketerProfileService } from "../services/MarketerProfileService";
+import { MarketerProfileService } from "../services/marketerProfileService";
 
 @injectable()
 export class MarketerProfileController {

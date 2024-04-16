@@ -7,7 +7,7 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
 } from "typeorm";
-import { Consultation } from "./Consultation";
+import { Consultation } from "./consultation";
 
 @Entity()
 export class SickLeave {

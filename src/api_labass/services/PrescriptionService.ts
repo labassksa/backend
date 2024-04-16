@@ -1,9 +1,9 @@
 import { getRepository } from "typeorm";
-import { Prescription } from "../models/Prescription";
-import { Consultation } from "../models/Consultation";
+import { Prescription } from "../models/prescription";
+import { Consultation } from "../models/consultation";
 import { inject, injectable } from "tsyringe";
 import AppDataSource from "../../configuration/ormconfig";
-import { ConsultationService } from "./ConsultationService";
+import { ConsultationService } from "./consultationService";
 
 @injectable()
 export class PrescriptionService {

@@ -1,9 +1,9 @@
 import { injectable, inject } from "tsyringe";
 import AppDataSource from "../../configuration/ormconfig";
 import { Roles } from "../../types/roles";
-import { MarketerProfile } from "../models/Marketer";
-import { User } from "../models/User";
-import { UserService } from "./UserService";
+import { MarketerProfile } from "../models/marketer";
+import { User } from "../models/user";
+import { UserService } from "./userService";
 
 @injectable()
 export class MarketerProfileService {

@@ -1,8 +1,8 @@
 import { injectable, inject } from "tsyringe";
 import crypto from "crypto";
-import { PromotionalCode } from "../models/PromotionalCode";
+import { PromotionalCode } from "../models/promotionalCode";
 import { AppDataSource } from "../../configuration/ormconfig";
-import { MarketerProfileService } from "./MarketerProfileService";
+import { MarketerProfileService } from "./marketerProfileService";
 
 @injectable()
 export class PromotionalCodeService {
@@ -64,7 +64,7 @@ export class PromotionalCodeService {
 
     // Ensuring the combined string is 8 characters might involve padding or truncating
     // Here, we'll pad the string if it's shorter than 8 characters (unlikely with the current setup)
- // Pad with '0's to ensure 8 characters
+    // Pad with '0's to ensure 8 characters
 
     return combinedString; // Returns an 8-character string
   }
@@ -88,14 +88,17 @@ export class PromotionalCodeService {
   }
 
   // This method is to update the promo code generated revenue after a successful payment
-  async updateTotalRevenueGenerated(code: string, paidAmount: number): Promise<PromotionalCode> {
+  async updateTotalRevenueGenerated(
+    code: string,
+    paidAmount: number
+  ): Promise<PromotionalCode> {
     // Find the promotional code entity by its code
     const promotionalCode = await this.promotionalCodeRepository.findOne({
       where: { code: code },
     });
 
     if (!promotionalCode) {
-      throw new Error('Promotional code not found');
+      throw new Error("Promotional code not found");
     }
 
     // Update the total revenue generated

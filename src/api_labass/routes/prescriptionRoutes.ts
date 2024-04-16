@@ -1,9 +1,9 @@
 import { Request, Response } from "express";
 import express from "express";
-import { PrescriptionController } from "../controllers/PrescriptionController";
+import { PrescriptionController } from "../controllers/prescriptionController";
 import { container } from "tsyringe";
 import { AuthMiddleware } from "../middlewares/authMiddleware";
-import { prescriptionValidationRules } from "../middlewares/validation/PrescriptionvalidationRules";
+import { prescriptionValidationRules } from "../middlewares/validation/prescriptionvalidationRules";
 
 const prescriptionRouter = express.Router();
 const prescriptionController = container.resolve(PrescriptionController);

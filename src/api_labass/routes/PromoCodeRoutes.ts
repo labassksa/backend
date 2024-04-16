@@ -2,7 +2,7 @@
 import express from "express";
 import { Request, Response } from "express";
 import { container } from "tsyringe";
-import { PromotionalCodeController } from "../controllers/PromoCodeController";
+import { PromotionalCodeController } from "../controllers/promoCodeController";
 import { generateCodeValidation } from "../middlewares/validation/generateCodeValidation";
 import { AuthMiddleware } from "../middlewares/authMiddleware";
 

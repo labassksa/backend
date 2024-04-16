@@ -1,6 +1,6 @@
 // src/routes.ts
 import express from "express";
-import { AuthController } from "../controllers/AuthController";
+import { AuthController } from "../controllers/authController";
 import { authValidation } from "../middlewares/validation/authValidation";
 import { container } from "tsyringe";
 

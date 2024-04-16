@@ -7,9 +7,9 @@ import {
   OneToOne,
   PrimaryGeneratedColumn,
 } from "typeorm";
-import { User } from "./User";
-import { Consultation } from "./Consultation";
-import { Insurance } from "./Insurance";
+import { User } from "./user";
+import { Consultation } from "./consultation";
+import { Insurance } from "./insurance";
 
 @Entity()
 export class PatientProfile {

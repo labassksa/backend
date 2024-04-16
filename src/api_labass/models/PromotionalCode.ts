@@ -1,5 +1,11 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, CreateDateColumn } from "typeorm";
-import { MarketerProfile } from "./Marketer";
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  ManyToOne,
+  CreateDateColumn,
+} from "typeorm";
+import { MarketerProfile } from "./marketer";
 @Entity()
 export class PromotionalCode {
   @PrimaryGeneratedColumn()
@@ -28,7 +34,7 @@ export class PromotionalCode {
 
   @CreateDateColumn()
   createdAt!: Date;
-  
+
   @ManyToOne(
     () => MarketerProfile,
     (marketerProfile) => marketerProfile.promotionalCodes

@@ -1,7 +1,7 @@
-import { User } from "../models/User";
-import { PatientProfile } from "../models/PatientProfile";
+import { User } from "../models/user";
+import { PatientProfile } from "../models/patientProfile";
 import { inject, injectable } from "tsyringe";
-import { UserService } from "./UserService";
+import { UserService } from "./userService";
 import AppDataSource from "../../configuration/ormconfig";
 
 @injectable()

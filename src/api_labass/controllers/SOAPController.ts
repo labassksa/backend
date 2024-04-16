@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { injectable, inject } from "tsyringe";
-import { SOAPService } from "../services/SOAPService";
+import { SOAPService } from "../services/soapService";
 
 @injectable()
 export class SOAPController {

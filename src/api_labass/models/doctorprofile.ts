@@ -8,8 +8,8 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
-import { Consultation } from "./Consultation";
-import { User } from "./User";
+import { Consultation } from "./consultation";
+import { User } from "./user";
 
 @Entity()
 export class DoctorProfile {
@@ -21,7 +21,7 @@ export class DoctorProfile {
 
   @Column({ nullable: true })
   iban?: string; // Marketer's IBAN for financial transactions
-  
+
   @Column()
   medicalLicenseNumber!: string;
 

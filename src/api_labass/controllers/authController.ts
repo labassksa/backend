@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { AuthService } from "../services/AuthService";
+import { AuthService } from "../services/authService";
 import { container, inject, injectable } from "tsyringe";
 
 @injectable()

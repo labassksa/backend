@@ -2,7 +2,7 @@
 import { Request, Response } from "express";
 import express from "express";
 import { container } from "tsyringe";
-import { UserController } from "../controllers/UserController";
+import { UserController } from "../controllers/userController";
 import { registerOrLoginValidation } from "../middlewares/validation/createUserValidation";
 import { AuthMiddleware } from "../middlewares/authMiddleware";
 import { userInfoValidation } from "../middlewares/validation/userInfoValidation";

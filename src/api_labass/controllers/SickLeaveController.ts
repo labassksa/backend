@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { injectable, inject } from "tsyringe";
-import { SickLeaveService } from "../services/SickLeaveService";
+import { SickLeaveService } from "../services/sickLeaveService";
 
 @injectable()
 export class SickLeaveController {

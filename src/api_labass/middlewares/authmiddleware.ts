@@ -4,9 +4,9 @@
 import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
 import { container } from "tsyringe";
-import { UserService } from "../services/UserService";
-import { User } from "../models/User";
-import { PatientProfile } from "../models/PatientProfile";
+import { UserService } from "../services/userService";
+import { User } from "../models/user";
+import { PatientProfile } from "../models/patientProfile";
 
 declare global {
   namespace Express {

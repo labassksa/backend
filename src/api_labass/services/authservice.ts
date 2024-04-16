@@ -6,10 +6,10 @@
 //Use packages like jsonwebtoken for token generation and verification
 
 import jwt from "jsonwebtoken";
-import { UserService } from "./UserService"; // Assuming you have this service
-import { OTPService } from "./OTPService"; // Your SMS verification service
+import { UserService } from "./userService"; // Assuming you have this service
+import { OTPService } from "./otpService"; // Your SMS verification service
 import { inject, injectable } from "tsyringe";
-import { PatientService } from "./PatientService";
+import { PatientService } from "./patientService";
 import { Roles } from "../../types/roles";
 
 export
@@ -34,7 +34,7 @@ class AuthService {
       let user = await this.userService.findUserByPhoneNumber(phoneNumber);
       //or Proceed with creating the user since OTP verification succeeded and the user would like to register
       if (!user) {
-        user = await this.userService.createPartialUser(role,phoneNumber );
+        user = await this.userService.createPartialUser(role, phoneNumber);
       }
 
       //create patient profile for the user during sign in and use it later for fetching consultation/consultations related to the patient

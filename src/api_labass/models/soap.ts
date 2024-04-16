@@ -7,7 +7,7 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
 } from "typeorm";
-import { Consultation } from "./Consultation";
+import { Consultation } from "./consultation";
 
 @Entity()
 export class SOAP {
@@ -29,10 +29,10 @@ export class SOAP {
   @OneToOne(() => Consultation, (consultation) => consultation.soap)
   consultation!: Consultation;
 
-   //dates
-   @CreateDateColumn()
-   createdAt!: Date;
- 
-   @UpdateDateColumn()
-   lastUpdatedAt?: Date;
+  //dates
+  @CreateDateColumn()
+  createdAt!: Date;
+
+  @UpdateDateColumn()
+  lastUpdatedAt?: Date;
 }

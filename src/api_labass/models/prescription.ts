@@ -7,7 +7,7 @@ import {
   UpdateDateColumn,
   OneToOne,
 } from "typeorm";
-import { Consultation } from "./Consultation";
+import { Consultation } from "./consultation";
 
 @Entity()
 export class Prescription {
@@ -49,7 +49,7 @@ export class Prescription {
   indications?: string;
 
   @Column()
-  duration!: string; // e.g., 1 
+  duration!: string; // e.g., 1
 
   @Column()
   durationUnit!: string;
@@ -57,13 +57,12 @@ export class Prescription {
   @Column({ default: false })
   prn!: boolean; // true if 'as needed', otherwise false
 
-  
   // Diagnosis field
-  @Column("text", { array: true, default: () => "array[]::text[]" },)
+  @Column("text", { array: true, default: () => "array[]::text[]" })
   diagnoses: string[] = [];
 
   // allergies field
-  @Column("text", { array: true, default: () => "array[]::text[]" },)
+  @Column("text", { array: true, default: () => "array[]::text[]" })
   allergies: string[] = [];
 
   //dates

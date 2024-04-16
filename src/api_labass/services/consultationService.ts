@@ -1,13 +1,13 @@
 import { Repository } from "typeorm";
 import { injectable } from "tsyringe";
-import { Consultation } from "../models/Consultation";
+import { Consultation } from "../models/consultation";
 import AppDataSource from "../../configuration/ormconfig";
-import { consultationMachine } from "./ConsultationStateMachine";
+import { consultationMachine } from "./consultationStateMachine";
 import { createActor, StateValue } from "xstate";
-import { UserService } from "./UserService";
-import { PatientService } from "./PatientService";
+import { UserService } from "./userService";
+import { PatientService } from "./patientService";
 import { ConsultationStatus } from "../../types/consultationstatus";
-import { PatientProfile } from "../models/PatientProfile";
+import { PatientProfile } from "../models/patientProfile";
 import { eventNames } from "process";
 import e from "express";
 

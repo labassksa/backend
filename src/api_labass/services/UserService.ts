@@ -1,4 +1,4 @@
-import { User } from "../models/User";
+import { User } from "../models/user";
 import AppDataSource from "../../configuration/ormconfig";
 import { injectable } from "tsyringe";
 
@@ -13,7 +13,6 @@ export class UserService {
     extraData?: Partial<User>
   ): Promise<User> {
     try {
-  
       const user = this.userRepository.create({
         role,
         phoneNumber,
@@ -30,14 +29,10 @@ export class UserService {
       ) {
         // You can customize the error message by checking the fields in 'error.driverError.detail'
         if (error.driverError.detail.includes("phoneNumber")) {
-          throw new Error(
-            "phone number already exists."
-          );
+          throw new Error("phone number already exists.");
         }
         if (error.driverError.detail.includes("nationalId")) {
-          throw new Error(
-            "national ID already exists."
-          );
+          throw new Error("national ID already exists.");
         }
       }
       // For other errors, rethrow the generic error
@@ -65,14 +60,10 @@ export class UserService {
       ) {
         // You can customize the error message by checking the fields in 'error.driverError.detail'
         if (error.driverError.detail.includes("phoneNumber")) {
-          throw new Error(
-            "phone number already exists."
-          );
+          throw new Error("phone number already exists.");
         }
         if (error.driverError.detail.includes("nationalId")) {
-          throw new Error(
-            "national ID already exists."
-          );
+          throw new Error("national ID already exists.");
         }
       }
 

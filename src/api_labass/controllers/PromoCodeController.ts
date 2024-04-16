@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { injectable, inject } from 'tsyringe';
-import { PromotionalCodeService } from '../services/PromoCodeService';
+import { PromotionalCodeService } from '../services/promoCodeService';
 
 @injectable()
 export class PromotionalCodeController {

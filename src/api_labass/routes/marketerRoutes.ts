@@ -1,9 +1,9 @@
 // routes/marketerRoutes.ts
 import express, { Request, Response } from "express";
 import { container } from "tsyringe";
-import { MarketerProfileController } from "../controllers/MarketerProfileController";
+import { MarketerProfileController } from "../controllers/marketerProfileController";
 // Assume similar middleware exists for marketer profiles
-import { createMarketerValidation } from "../middlewares/validation/CreateMarketerValidation";
+import { createMarketerValidation } from "../middlewares/validation/createMarketerValidation";
 import { AuthMiddleware } from "../middlewares/authMiddleware";
 // Assuming a validation middleware for updating marketer profiles
 // import { updateMarketerInfoValidation } from "../middlewares/validation/updateMarketerInfoValidation";

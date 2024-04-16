@@ -1,11 +1,11 @@
 // Assuming this file is located at: services/DoctorProfileService.ts
 import { injectable, inject } from "tsyringe";
 import AppDataSource from "../../configuration/ormconfig";
-import { DoctorProfile } from "../models/DoctorProfile";
-import { UserService } from "./UserService";
-import { Consultation } from "../models/Consultation";
+import { DoctorProfile } from "../models/doctorProfile";
+import { UserService } from "./userService";
+import { Consultation } from "../models/consultation";
 import { ConsultationStatus } from "../../types/consultationstatus";
-import { User } from "../models/User";
+import { User } from "../models/user";
 import { Roles } from "../../types/roles";
 
 @injectable()

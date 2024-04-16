@@ -1,7 +1,7 @@
 import { injectable, inject } from "tsyringe";
 import { Repository } from "typeorm";
-import { Insurance } from "../models/Insurance";
-import { PatientService } from "./PatientService";
+import { Insurance } from "../models/insurance";
+import { PatientService } from "./patientService";
 import AppDataSource from "../../configuration/ormconfig";
 
 // Example utility function that simulates fetching insurance data from an external API

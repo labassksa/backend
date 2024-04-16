@@ -5,7 +5,7 @@ import {
   CreateDateColumn,
   OneToOne,
 } from "typeorm";
-import { MarketerProfile } from "./Marketer";
+import { MarketerProfile } from "./marketer";
 
 @Entity()
 export class User {

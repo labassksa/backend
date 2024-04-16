@@ -8,14 +8,14 @@ import {
   JoinColumn,
   Column,
 } from "typeorm";
-import { DoctorProfile } from "./DoctorProfile";
-import { PatientProfile } from "./PatientProfile";
+import { DoctorProfile } from "./doctorProfile";
+import { PatientProfile } from "./patientProfile";
 import { ConsultationType } from "../../types/consultation_types";
 import { ConsultationStatus } from "../../types/consultationstatus";
-import { Prescription } from "./Prescription";
-import { SOAP } from "./Soap";
-import { SickLeave } from "./SickLeave";
-import { ChatMessage } from "./ChatMessage";
+import { Prescription } from "./prescription";
+import { SOAP } from "./soap";
+import { SickLeave } from "./sickLeave";
+import { ChatMessage } from "./chatMessage";
 
 @Entity()
 export class Consultation {
