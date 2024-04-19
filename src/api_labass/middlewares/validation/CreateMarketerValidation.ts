@@ -4,9 +4,10 @@ import { Request, Response, NextFunction } from "express";
 export const createMarketerValidation = [
   // Validate and sanitize phoneNumber
   body("phoneNumber")
-    // Use regex to enforce that phoneNumber starts with '0' and is 10 digits long
-    .matches(/^0\d{9}$/)
-    .withMessage("Phone number must start with 0 and be 10 digits long"),
+    .matches(/^\+\d{1,3}\d{7,14}$/)
+    .withMessage(
+      "Phone number must start with a country code and be between 8 to 17 digits long"
+    ),
   // Validate and sanitize firstName
   body("firstName").trim().notEmpty().withMessage("First name is required."),
 

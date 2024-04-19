@@ -36,7 +36,7 @@ export class UserService {
         }
       }
       // For other errors, rethrow the generic error
-      throw new Error(`Failed to create marketer user. ${error}`);
+      throw new Error(`Failed to create user. ${error}`);
     }
   }
 
@@ -128,14 +128,10 @@ export class UserService {
       ) {
         // You can customize the error message by checking the fields in 'error.driverError.detail'
         if (error.driverError.detail.includes("phoneNumber")) {
-          throw new Error(
-            "Failed to create dependent user: phone number already exists."
-          );
+          throw new Error("phone number already exists.");
         }
         if (error.driverError.detail.includes("nationalId")) {
-          throw new Error(
-            "Failed to create dependent user: national ID already exists."
-          );
+          throw new Error("national ID already exists.");
         }
       }
       console.error(`An error occurred while finding user by ID: ${error}`);

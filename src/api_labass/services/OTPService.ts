@@ -9,9 +9,8 @@ interface OTPDetails {
   expiry: Date;
 }
 
-export
 @injectable()
-class OTPService {
+export class OTPService {
   private otpStorage: Map<string, OTPDetails> = new Map();
   private sendOtpApiUrl = "SEND_OTP_ENDPOINT";
   private apiKey = "YOUR_API_KEY";

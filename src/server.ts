@@ -15,7 +15,6 @@ import prescriptionRouter from "./api_labass/routes/prescriptionRoutes";
 import soapRouter from "./api_labass/routes/soapRoutes";
 import sickLeaveRouter from "./api_labass/routes/sickLeaveRoutes";
 import marketerRouter from "./api_labass/routes/marketerRoutes";
-import { PromotionalCode } from "./api_labass/models/promotionalCode";
 import promoCodeRouter from "./api_labass/routes/promoCodeRoutes";
 import doctorRouter from "./api_labass/routes/doctorRoutes";
 

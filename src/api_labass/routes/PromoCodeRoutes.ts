@@ -3,7 +3,7 @@ import express from "express";
 import { Request, Response } from "express";
 import { container } from "tsyringe";
 import { PromotionalCodeController } from "../controllers/promoCodeController";
-import { generateCodeValidation } from "../middlewares/validation/generateCodeValidation";
+import { generatePromoCodeValidation } from "../middlewares/validation/generatePromoCodeValidation";
 import { AuthMiddleware } from "../middlewares/authMiddleware";
 
 const promoCodeRouter = express.Router();
@@ -15,7 +15,7 @@ const promotionalCodeController = container.resolve(PromotionalCodeController);
 promoCodeRouter.post(
   "/generate-promotional-code",
   AuthMiddleware,
-  generateCodeValidation,
+  generatePromoCodeValidation,
   (req: Request, res: Response) =>
     promotionalCodeController.generateCode(req, res)
 );

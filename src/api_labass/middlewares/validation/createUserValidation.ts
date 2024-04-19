@@ -3,9 +3,10 @@ import { Request, Response, NextFunction } from "express";
 
 export const registerOrLoginValidation = [
   body("phoneNumber")
-    // Use regex to enforce that phoneNumber starts with '0' and is 10 digits long
-    .matches(/^0\d{9}$/)
-    .withMessage("Phone number must start with 0 and be 10 digits long"),
+    .matches(/^\+\d{1,3}\d{7,14}$/)
+    .withMessage(
+      "Phone number must start with a country code and be between 8 to 17 digits long"
+    ),
   body("role")
     .isIn(["patient", "doctor", "admin"]) // replace it with Roles enum if applicable
     .withMessage("Invalid role specified"),

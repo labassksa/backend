@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import { body, validationResult } from "express-validator";
 
-export const generateCodeValidation = [
+export const generatePromoCodeValidation = [
   // Validate marketerId is provided and is a number
   body("marketerId")
     .exists({ checkFalsy: true })

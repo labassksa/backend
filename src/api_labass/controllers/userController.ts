@@ -10,6 +10,7 @@ export class UserController {
     try {
       const { phoneNumber, role } = req.body;
       const user = await this.userService.createPartialUser(role, phoneNumber);
+      console.error(`created At: ${user.createdAt}`)
       res.status(201).json(user);
     } catch (error) {
       res.status(500).json({
