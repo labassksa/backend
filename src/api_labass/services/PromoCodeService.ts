@@ -3,6 +3,7 @@ import crypto from "crypto";
 import { PromotionalCode } from "../models/promotionalCode";
 import { AppDataSource } from "../../configuration/ormconfig";
 import { MarketerProfileService } from "./marketerProfileService";
+import * as QRCode from "qrcode";
 
 @injectable()
 export class PromotionalCodeService {
@@ -21,7 +22,7 @@ export class PromotionalCodeService {
       marketerPercentage?: number;
       marketerOrganizationPercentage?: number;
     }
-  ): Promise<PromotionalCode> {
+  ): Promise<{}> {
     const marketerProfile =
       await this.marketerProfileService.getMarketerProfileByMarketerId(
         marketerId

@@ -1,39 +1,36 @@
 import {
   Entity,
   PrimaryGeneratedColumn,
-  ManyToOne,
   Column,
   CreateDateColumn,
-  JoinColumn,
 } from "typeorm";
-import { User } from "./user";
-import { Consultation } from "./consultation";
 
 @Entity()
 export class ChatMessage {
   @PrimaryGeneratedColumn()
   id!: number;
 
-  @ManyToOne(() => User)
-  @JoinColumn()
-  sender!: User; // Identifies the sender of the message
+  @Column()
+  senderId!: number; // ID of the sender, assumed to link to a User entity
 
-  @Column("text")
-  message!: string; // The text content of the message
+  @Column()
+  receiverId!: number; // ID of the receiver, also linking to a User entity
+
+  @Column()
+  consultationId!: number; // Directly use only the consultation ID
+
+  @Column("text") //"text": This specifies the type of the column in the database. In SQL databases, text is a column type that can store strings of any length. It is often used for large pieces of text like articles, comments, descriptions, etc., where the length can exceed the limits of a varchar type.
+  message!: string;
 
   @Column({ nullable: true })
-  attachmentUrl?: string; // URL to an attached file, image, or video
+  attachmentUrl?: string;
 
   @Column({ nullable: true })
-  attachmentType?: string; // Type of attachment to handle different rendering (e.g., 'image', 'video', 'file')
-
-  @ManyToOne(() => Consultation, (consultation) => consultation.chats)
-  @JoinColumn()
-  consultation!: Consultation; // Link to the consultation this message is part of
+  attachmentType?: string;
 
   @Column({ default: false })
-  read!: boolean; // Indicates whether the message has been read
+  read!: boolean;
 
   @CreateDateColumn()
-  createdAt!: Date; // Timestamp when the message was created
+  createdAt!: Date;
 }

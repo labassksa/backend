@@ -57,10 +57,6 @@ export class Consultation {
   })
   type!: ConsultationType;
 
-  // Chats are tied to consultations, not users
-  @OneToMany((type) => ChatMessage, (chat) => chat.consultation)
-  chats?: ChatMessage[];
-
   // One-to-one relations to other consultation details
   @OneToOne((type) => Prescription, { cascade: true, nullable: true })
   @JoinColumn()

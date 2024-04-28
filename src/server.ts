@@ -17,12 +17,32 @@ import sickLeaveRouter from "./api_labass/routes/sickLeaveRoutes";
 import marketerRouter from "./api_labass/routes/marketerRoutes";
 import promoCodeRouter from "./api_labass/routes/promoCodeRoutes";
 import doctorRouter from "./api_labass/routes/doctorRoutes";
+import { Server as SocketIO } from "socket.io";
+import { createServer } from "http";
+import { initializeSocket } from "./api_labass/controllers/socketIOController";
+import { MongoClient } from "mongodb";
 
 const app = express();
+//By using the http module:
+//create a server that both your Express application and Socket.IO can attach to
+const httpServer = createServer(app);
+const io = new SocketIO(httpServer, {
+  cors: {
+    origin: "*", // Adjust according to your CORS policy // Be sure to tighten this for production!
+    //methods: ["GET", "POST"],
+  },
+});
+
 const PORT = process.env.PORT || 3000;
 console.log(`Server running on port ${PORT}`);
 console.log(`env variable for Password: ${process.env.DB_PASSWORD}`);
 app.use(express.json());
+
+// MongoDB connection URI
+// const uri = "mongodb://root:example@localhost:27018";
+// const client = new MongoClient(uri, {});
+// Initialize Socket.IO with the separated logic
+initializeSocket(io);
 
 async function startServer() {
   //initialize the postgress db
@@ -45,9 +65,13 @@ async function startServer() {
     app.use("/api_labass", promoCodeRouter);
     app.use("/api_labass", doctorRouter);
 
-    app.listen(PORT, () => {
+    // Use httpServer to listen instead of app.listen
+    httpServer.listen(PORT, () => {
       console.log(`Server running on port ${PORT}`);
     });
+    // app.listen(PORT, () => {
+    //   console.log(`Server running on port ${PORT}`);
+    // });
     // Resolve ConsultationService from the container
     const consultationService = container.resolve(ConsultationService);
 
