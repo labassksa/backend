@@ -16,7 +16,7 @@ export class AuthController {
       return res.status(200).json({ token });
     } catch (error) {
       if (
-        typeof error === "object" &&
+        typeof error === "object" && 
         error !== null &&
         "message" in error &&
         typeof error.message === "string"
