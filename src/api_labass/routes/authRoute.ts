@@ -6,7 +6,6 @@ import { container } from "tsyringe";
 
 const authController = container.resolve(AuthController);
 
-
 const authRouter = express.Router();
 authRouter.post(
   "/auth",
@@ -14,6 +13,5 @@ authRouter.post(
   // AuthMiddleware,
   authController.verifyOTPAndAuthenticate
 );
-
 
 export default authRouter;
