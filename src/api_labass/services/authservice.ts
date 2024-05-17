@@ -50,10 +50,7 @@ class AuthService {
           role: user.role,
           patientProfile: patient.profile,
         },
-        process.env.JWT_SECRET!,
-        {
-          expiresIn: "24h",
-        }
+        process.env.JWT_SECRET!
       );
 
       return token;

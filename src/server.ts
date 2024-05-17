@@ -21,6 +21,7 @@ import { Server as SocketIO } from "socket.io";
 import { createServer } from "http";
 import { initializeSocket } from "./api_labass/controllers/socketIOController";
 import { MongoClient } from "mongodb";
+import cors from "cors";
 
 const app = express();
 //By using the http module:
@@ -32,6 +33,9 @@ const io = new SocketIO(httpServer, {
     //methods: ["GET", "POST"],
   },
 });
+
+// Enable CORS for all routes and origins, this is to test the backend, Here’s a basic setup to allow CORS for all origins:
+app.use(cors());
 
 const PORT = process.env.PORT || 3000;
 console.log(`Server running on port ${PORT}`);
