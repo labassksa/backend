@@ -21,7 +21,7 @@ import { Payment } from "./payment";
 @Entity()
 export class Consultation {
   @PrimaryGeneratedColumn()
-  id!: number;
+  id!: number; 
 
   @ManyToOne(
     (type) => PatientProfile,
