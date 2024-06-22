@@ -51,31 +51,44 @@ export class ConsultationService {
     return consultation;
   }
 
-  async getAllConsultationsForPatient(
-    patientId: number
-  ): Promise<Consultation[]> {
-    // Use find() to retrieve all consultations for a given patientId
+  // async getAllConsultationsForPatient(
+  //   patientId: number
+  // ): Promise<Consultation[]> {
+  //   // Use find() to retrieve all consultations for a given patientId
+  //   const consultations = await this.consultationRepository.find({
+  //     where: { patient: { id: patientId } },
+  //     relations: ["doctor", "patient", "prescription", "soap", "sickLeave"],
+  //   });
+
+  //   if (consultations.length === 0) {
+  //     // If no consultations found, throw an error or handle as needed
+  //     throw new Error(
+  //       `No consultations found for patient with ID ${patientId}.`
+  //     );
+  //   }
+
+  //   return consultations;
+  // }
+
+  async getAllConsultationsForPatient(patientId: number): Promise<Consultation[]> {
     const consultations = await this.consultationRepository.find({
       where: { patient: { id: patientId } },
       relations: [
-        "doctor",
-        "patient",
-        "chats",
-        "prescription",
-        "soap",
-        "sickLeave",
+        "doctor.user", // Assuming 'user' is the relation from DoctorProfile to User
+        "patient.user", // Assuming 'user' is the relation from PatientProfile to User
+        "prescription", 
+        "soap", 
+        "sickLeave"
       ],
     });
-
+  
     if (consultations.length === 0) {
-      // If no consultations found, throw an error or handle as needed
-      throw new Error(
-        `No consultations found for patient with ID ${patientId}.`
-      );
+      throw new Error(`No consultations found for patient with ID ${patientId}.`);
     }
-
+  
     return consultations;
   }
+  
 
   async updateConsultation(
     id: number,

@@ -1,4 +1,4 @@
-// src/routes.ts
+// src/api_labass/routes.ts
 import express from "express";
 import { AuthController } from "../controllers/authController";
 import { authValidation } from "../middlewares/validation/authValidation";

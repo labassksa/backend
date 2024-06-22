@@ -16,6 +16,7 @@ import { Prescription } from "./prescription";
 import { SOAP } from "./soap";
 import { SickLeave } from "./sickLeave";
 import { ChatMessage } from "./chatMessage";
+import { Payment } from "./payment";
 
 @Entity()
 export class Consultation {
@@ -76,4 +77,8 @@ export class Consultation {
   @OneToOne((type) => SickLeave, { cascade: true, nullable: true })
   @JoinColumn()
   sickLeave?: SickLeave;
+
+  @OneToOne((type) => Payment, (payment) => payment.consultation)
+  @JoinColumn()
+  payment?: any;
 }

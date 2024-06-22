@@ -22,6 +22,7 @@ import { createServer } from "http";
 import { initializeSocket } from "./api_labass/controllers/socketIOController";
 import { MongoClient } from "mongodb";
 import cors from "cors";
+import paymentRouter from "./api_labass/routes/paymentRoute";
 
 const app = express();
 //By using the http module:
@@ -68,6 +69,7 @@ async function startServer() {
     app.use("/api_labass", marketerRouter);
     app.use("/api_labass", promoCodeRouter);
     app.use("/api_labass", doctorRouter);
+    app.use("/api_labass", paymentRouter);
 
     // Use httpServer to listen instead of app.listen
     httpServer.listen(PORT, () => {
